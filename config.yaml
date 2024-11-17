@@ -1,0 +1,15 @@
+api_ip:
+api_port:
+api_key:
+download_interval: 60  # En minutos
+output_directory: "./downloads"
+series:
+  - title: "The Amazing Digital Circus"
+    playlist: "https://www.youtube.com/playlist?list=PLHovnlOusNLgvAbnxluXCVB3KLj8e4QB-"
+    subtitles_language: "es,en"
+    audio_language: "es,en,ja"
+  - title: "Bad Living"
+    playlist:
+      - "https://www.youtube.com/playlist?list=PLZeG5Z2BGiue5AN1U9hJYCQswVn19NqOh"
+      - "https://www.youtube.com/playlist?list=PLZeG5Z2BGiucV0aFKdmVcv-xm8d_Ui_xP"
+      - "https://www.youtube.com/playlist?list=PLZeG5Z2BGiucAFBz8Zdriybutfkr50S8l"
