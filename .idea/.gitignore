@@ -22,4 +22,3 @@ venv/
 # Logs and local configs
 logs/
 *.log
-config.yaml
