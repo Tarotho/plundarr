@@ -30,3 +30,16 @@ class Telegram:
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
             print(f"Error al enviar mensaje: {e}")
+
+
+def activate_telegram(telegram_information):
+    if telegram_information['bot_token'] and telegram_information['bot_token'] != "YOUR_BOT_TOKEN_FROM_TELEGRAM":
+        if telegram_information['chat_id'] and telegram_information['chat_id'] != "YOUR_TELEGRAM_CHAT_ID":
+            print("telegram se activa")
+            return True
+        else:
+            print("telegram no se activa")
+            return False
+    else:
+        print("telegram no se activa")
+        return False

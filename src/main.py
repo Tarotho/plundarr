@@ -1,5 +1,6 @@
 import yaml
 
+from src.connectors.telegram import activate_telegram
 from src.managers.episodeManager import generate_episode_information
 from src.utils.save import load_downloaded_episodes, is_episode_downloaded
 from src.managers.seriesManager import download_video
@@ -32,7 +33,8 @@ def main():
                     continue
                 print(f'Se procede a descargar {title_video}')
                 episode_information = generate_episode_information(video_information, wished_series)
-                download_video(episode_information, downloaded_episodes)
+                telegram = activate_telegram(config.get('telegram'))
+                download_video(episode_information, downloaded_episodes, telegram)
 
 
 if __name__ == "__main__":
