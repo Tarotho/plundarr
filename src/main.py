@@ -19,10 +19,20 @@ def load_config():
         return None
 
 
+def load_series_list():
+    try:
+        with open("src/series.yaml", "r") as file:
+            series = yaml.safe_load(file)
+            return series['series']
+    except Exception as e:
+        print(f"Error al cargar el archivo de configuración: {e}")
+        return None
+
+
 def main(config):
     downloaded_episodes = load_downloaded_episodes()  # Cargar los episodios ya descargados desde save.json
 
-    wished_series_list = config["series"]
+    wished_series_list = load_series_list()
 
     for wished_series in wished_series_list:
         playlists = wished_series["playlist"]  # Puede ser una lista o una URL
