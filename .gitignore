@@ -1,0 +1,29 @@
+# Archivos de configuración de IntelliJ
+.idea/
+
+# Archivos compilados
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+
+# Archivos temporales de construcción
+target/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
+
+# Archivos de dependencias
+.mvn/
+.gradle/
+node_modules/
+venv/
+media/
+downloads/
+/src/data/config.yaml
+/src/data/save.json

@@ -1,0 +1,15 @@
+download_interval: 60  # En minutos
+sonarr:
+  api_ip: "YOUR_SONARR_IP"
+  api_port: "YOUR_SONARR_PORT"
+  api_key: "YOUR_SONARR_API_KEY"
+telegram:
+  bot_token: "YOUR_BOT_TOKEN_FROM_TELEGRAM"
+  chat_id: "YOUR_TELEGRAM_CHAT_ID"
+series:
+  - title: "Series Example"
+    playlist:
+      - "https://www.youtube.com/playlist_example"
+    subtitles_language: "es,es, jp"
+    audio_language: "es,en,ja"
+
