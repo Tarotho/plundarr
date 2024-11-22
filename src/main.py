@@ -1,20 +1,25 @@
+import sys
+import time
+
 import yaml
 
 from src.connectors.telegram import activate_telegram
-from src.managers.episodeManager import generate_episode_information
-from src.utils.save import load_downloaded_episodes, is_episode_downloaded
-from src.managers.seriesManager import download_video
 from src.connectors.youtube import get_playlist_info
+from src.managers.episodeManager import generate_episode_information
+from src.managers.seriesManager import download_video
+from src.utils.save import load_downloaded_episodes, is_episode_downloaded
 
 
-# Leer la configuración desde el archivo config.yaml
 def load_config():
-    with open("src/data/config.yaml", "r") as file:
-        return yaml.safe_load(file)
+    try:
+        with open("src/data/config.yaml", "r") as file:
+            return yaml.safe_load(file)
+    except Exception as e:
+        print(f"Error al cargar el archivo de configuración: {e}")
+        return None
 
 
-def main():
-    config = load_config()
+def main(config):
     downloaded_episodes = load_downloaded_episodes()  # Cargar los episodios ya descargados desde save.json
 
     wished_series_list = config["series"]
@@ -38,4 +43,13 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    while True:  # Ciclo infinito
+        config_file = load_config()  # Vuelve a cargar la configuración en cada ciclo
+        if config_file is None:
+            print("No se pudo cargar la configuración correctamente, saliendo de la aplicación.")
+            sys.exit(1)  # Termina la aplicación si hay un error al cargar la configuración
+
+        main(config_file)
+        download_interval = config_file.get("download_interval", 60)
+        print(f"Esperando {download_interval} minutos antes de la siguiente ejecución...")
+        time.sleep(download_interval * 60)  # Dormir por el intervalo (convertido a segundos)
