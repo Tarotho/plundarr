@@ -1,12 +1,7 @@
 series:
-  - title: "The Amazing Digital Circus"
+  - title: "Series Example"
     playlist:
-      - "https://www.youtube.com/playlist?list=PLHovnlOusNLgvAbnxluXCVB3KLj8e4QB-"
-    subtitles_language: "es,en"
+      - "https://www.youtube.com/playlist_example"
+      - "anoder url"
+    subtitles_language: "es,es, jp"
     audio_language: "es,en,ja"
-#  - title: "Bad Living"
-#    playlist:
-#      - "https://www.youtube.com/playlist?list=PLZeG5Z2BGiue5AN1U9hJYCQswVn19NqOh"
-#      - "https://www.youtube.com/playlist?list=PLZeG5Z2BGiucV0aFKdmVcv-xm8d_Ui_xP"
-#      - "https://www.youtube.com/playlist?list=PLZeG5Z2BGiucAFBz8Zdriybutfkr50S8l"
-#    subtitles_language: "es,en"
