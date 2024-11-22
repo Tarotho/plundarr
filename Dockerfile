@@ -17,4 +17,4 @@ COPY src /app/src
 # EXPOSE 80
 
 # Definimos el comando por defecto para ejecutar la aplicación
-CMD ["python", "main.py"]
+CMD ["python", "src/main.py"]
