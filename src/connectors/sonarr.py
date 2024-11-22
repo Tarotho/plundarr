@@ -10,7 +10,7 @@ def load_config(config_path):
 
 class Sonarr:
 
-    def __init__(self, config_path="src/data/config.yaml"):
+    def __init__(self, config_path="data/config.yaml"):
         config = load_config(config_path)
 
         api_ip = config["sonarr"]["api_ip"]
