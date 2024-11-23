@@ -51,20 +51,10 @@ def load_and_replace_env_vars(yaml_file):
     with open(yaml_file, "r") as file:
         config = yaml.safe_load(file)
 
-    # Reemplazar las variables de entorno en las cadenas del archivo YAML
-    def replace_env_vars(value):
-        # Si el valor es una cadena y contiene una variable de entorno
+    # Reemplazar las variables de entorno en el archivo YAML
+    for key, value in config.items():
         if isinstance(value, str):
-            return os.path.expandvars(value)  # Expande las variables de entorno
-        return value
+            # Reemplazar las variables de entorno dentro de las cadenas
+            config[key] = os.path.expandvars(value)
 
-    # Aplicar la expansión de variables de entorno en el archivo
-    def recursive_replace(config):
-        if isinstance(config, dict):
-            return {key: recursive_replace(val) for key, val in config.items()}
-        elif isinstance(config, list):
-            return [recursive_replace(item) for item in config]
-        else:
-            return replace_env_vars(config)
-
-    return recursive_replace(config)
+    return config
