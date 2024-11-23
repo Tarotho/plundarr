@@ -1,3 +1,4 @@
+import shutil
 import sys
 import time
 
@@ -53,7 +54,7 @@ def main(config):
 
 
 if __name__ == "__main__":
-
+    shutil.move("data/series.yaml", "config/series.yaml")
     while True:  # Ciclo infinito
         config_file = load_config()  # Vuelve a cargar la configuración en cada ciclo
         if config_file is None:
