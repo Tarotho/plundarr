@@ -7,6 +7,7 @@ import yaml
 from connectors.telegram import activate_telegram
 from connectors.youtube import get_playlist_info
 from managers.episodeManager import generate_episode_information
+from managers.fileManager import validate_series_yaml
 from managers.seriesManager import download_video
 from utils.save import load_downloaded_episodes, is_episode_downloaded
 
@@ -57,6 +58,7 @@ if __name__ == "__main__":
     shutil.move("data/series.yaml", "config/series.yaml")
     while True:  # Ciclo infinito
         config_file = load_config()  # Vuelve a cargar la configuración en cada ciclo
+        validate_series_yaml(config_file)
         if config_file is None:
             print("No se pudo cargar la configuración correctamente, saliendo de la aplicación.")
             sys.exit(1)  # Termina la aplicación si hay un error al cargar la configuración
