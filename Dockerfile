@@ -6,12 +6,12 @@ WORKDIR /app
 
 # Copiamos el archivo de requisitos en el contenedor
 COPY data/requirements.txt /app/requirements.txt
-
 # Instalamos las dependencias necesarias
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiamos el proyecto al contenedor
 COPY . /app
+COPY config/config.yaml /app/config/config.yaml
 
 # Exponemos el puerto 80 si es necesario (si tu aplicación usa un servidor web, por ejemplo)
 # EXPOSE 80
