@@ -1,7 +1,11 @@
+import logging
+
 from connectors.sonarr import Sonarr
 from connectors.youtube import get_format_info
 from utils.utils import episode_title_reduction, sanitize_filename, format_episode_title, generate_command, \
     word_count_overlap
+
+logger = logging.getLogger(__name__)
 
 
 def generate_episode_information(video_information, wished_series):
@@ -64,7 +68,7 @@ def get_episode_information_from_sonarr(episode_title, series_id):
 
 def get_episode_data(episode_information):
     episode_data = []
-    print("extrayendo información usando el api sonarr")
+    logger.info("extrayendo información usando el api sonarr")
     for episode in episode_information:
         data = {
             "name": "ManualImport",
@@ -85,15 +89,15 @@ def get_episode_data(episode_information):
 
 def import_episode_using_sonarr(episode_path):
     sonarr = Sonarr()
-    print("intentando capiturar informacion del episodio")
+    logger.info("intentando capiturar informacion del episodio")
     try:
         response = sonarr.get_episodes(episode_path)
-        print("Sonarr a retornado informacion adecuada")
+        logger.info("Sonarr a retornado informacion adecuada")
         sonarr.import_episodes(get_episode_data(response))
-        print('sonarr ha importado los episodios correctamente')
+        logger.info('sonarr ha importado los episodios correctamente')
         return True
     except Exception as e:
-        print(f"Error al importar episodio: {e}")
+        logger.error(f"Error al importar episodio: {e}")
         return False
 
 

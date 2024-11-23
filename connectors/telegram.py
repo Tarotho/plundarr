@@ -1,14 +1,13 @@
+import logging
+
 import requests
 import yaml
+
+logger = logging.getLogger(__name__)
 
 
 class Telegram:
     def __init__(self, config_path="config/config.yaml"):
-        """
-        Inicializa el bot de Telegram leyendo los datos del archivo de configuración.
-
-        :param config_path: Ruta al archivo config.yaml.
-        """
         with open(config_path, "r") as file:
             config = yaml.safe_load(file)
             telegram_config = config.get("telegram", {})
@@ -16,7 +15,7 @@ class Telegram:
             self.chat_id = telegram_config.get("chat_id")
 
         if not self.bot_token or not self.chat_id:
-            raise ValueError("Faltan datos de configuración para Telegram en config.yaml")
+            logger.error("Faltan datos de configuración para Telegram en config.yaml")
 
         self.api_url = f"https://api.telegram.org/bot{self.bot_token}/sendMessage"
 
@@ -29,17 +28,17 @@ class Telegram:
             response = requests.post(self.api_url, json=payload)
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            print(f"Error al enviar mensaje: {e}")
+            logger.error(f"Error al enviar mensaje: {e}")
 
 
 def activate_telegram(telegram_information):
     if telegram_information['bot_token'] and telegram_information['bot_token'] != "YOUR_BOT_TOKEN_FROM_TELEGRAM":
         if telegram_information['chat_id'] and telegram_information['chat_id'] != "YOUR_TELEGRAM_CHAT_ID":
-            print("telegram se activa")
+            logger.info("telegram se activa")
             return True
         else:
-            print("telegram no se activa")
+            logger.warning("telegram no se activa")
             return False
     else:
-        print("telegram no se activa")
+        logger.warning("telegram no se activa")
         return False

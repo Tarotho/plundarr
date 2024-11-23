@@ -1,6 +1,14 @@
+import logging
 import os
 import re
 import shutil
+
+# Configuración global de logging
+logging.basicConfig(
+    level=logging.DEBUG,  # Puedes elegir el nivel de log que necesites
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # Formato del log
+    handlers=[logging.StreamHandler()]  # Esto imprime los logs en la consola
+)
 
 
 def sanitize_filename(filename):

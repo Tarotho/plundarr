@@ -1,5 +1,9 @@
+import logging
+
 import requests
 import yaml
+
+logger = logging.getLogger(__name__)
 
 
 def load_config(config_path):
@@ -41,10 +45,10 @@ class Sonarr:
 
             return response.json()
         except requests.exceptions.RequestException as e:
-            print(f"Error al comunicarse con la API de Sonarr: {e}")
+            logger.error(f"Error al comunicarse con la API de Sonarr: {e}")
             return []
         except KeyError as e:
-            print(f"Error al procesar la respuesta de la API: {e}")
+            logger.error(f"Error al procesar la respuesta de la API: {e}")
             return []
 
     def get_episodes(self, folder):
@@ -57,14 +61,14 @@ class Sonarr:
     def import_episodes(self, episode_list):
         base_url = f"{self.base_url}/api/v3/command"
         if not episode_list:  # Si el JSON está vacío o None
-            raise ValueError("Error: La carpeta está vacía, no hay nada que importar.")
+            logger.warning("Error: La carpeta está vacía, no hay nada que importar.")
 
         for episode in episode_list:
             try:
                 r = requests.post(base_url, headers=self.headers, json=episode)
                 r.raise_for_status()
-                print(f"episodio importado correctametne por sonarr")
+                logger.info(f"episodio importado correctametne por sonarr")
             except Exception as err:  # Captura cualquier excepción
-                print(f"An error occurred while importing {episode['files']['path']}: {err}")
+                logger.error(f"Ha ocurrido un error mientras se importaba {episode['files']['path']}: {err}")
                 # Opcional: podrías relanzar una excepción genérica si lo prefieres
-                raise RuntimeError("An error occurred during the import process.")
+                raise RuntimeError("Ha ocurrido un error durante el proceso de importación.")
