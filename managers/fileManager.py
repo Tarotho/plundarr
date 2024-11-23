@@ -1,3 +1,8 @@
+import os
+
+import yaml
+
+
 def validate_series_yaml(data):
     is_valid = True  # Iniciamos con la suposición de que es válido
     # Verificar que el formato del archivo es una lista
@@ -40,3 +45,26 @@ def validate_series_yaml(data):
         print("El archivo YAML tiene errores. Revísalos. Se volverá a intentar en 10 minutos")
 
     return is_valid  # Devuelve True si es válido, False si tiene errores
+
+
+def load_and_replace_env_vars(yaml_file):
+    with open(yaml_file, "r") as file:
+        config = yaml.safe_load(file)
+
+    # Reemplazar las variables de entorno en las cadenas del archivo YAML
+    def replace_env_vars(value):
+        # Si el valor es una cadena y contiene una variable de entorno
+        if isinstance(value, str):
+            return os.path.expandvars(value)  # Expande las variables de entorno
+        return value
+
+    # Aplicar la expansión de variables de entorno en el archivo
+    def recursive_replace(config):
+        if isinstance(config, dict):
+            return {key: recursive_replace(val) for key, val in config.items()}
+        elif isinstance(config, list):
+            return [recursive_replace(item) for item in config]
+        else:
+            return replace_env_vars(config)
+
+    return recursive_replace(config)
