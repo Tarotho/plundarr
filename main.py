@@ -12,7 +12,7 @@ from utils.save import load_downloaded_episodes, is_episode_downloaded
 
 def load_config():
     try:
-        with open("config/config.yaml", "r") as file:
+        with open("data/config.yaml", "r") as file:
             return yaml.safe_load(file)
     except Exception as e:
         print(f"Error al cargar el archivo de configuración: {e}")
@@ -21,7 +21,7 @@ def load_config():
 
 def load_series_list():
     try:
-        with open("series.yaml", "r") as file:
+        with open("config/series.yaml", "r") as file:
             series = yaml.safe_load(file)
             return series['series']
     except Exception as e:
@@ -53,6 +53,7 @@ def main(config):
 
 
 if __name__ == "__main__":
+
     while True:  # Ciclo infinito
         config_file = load_config()  # Vuelve a cargar la configuración en cada ciclo
         if config_file is None:

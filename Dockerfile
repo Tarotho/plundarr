@@ -11,7 +11,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiamos el proyecto al contenedor
 COPY . /app
-COPY config/config.yaml /app/config/config.yaml
 
 # Exponemos el puerto 80 si es necesario (si tu aplicación usa un servidor web, por ejemplo)
 # EXPOSE 80
