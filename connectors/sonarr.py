@@ -19,9 +19,9 @@ class Sonarr:
     def __init__(self):
         config = generate_sonarr_configuration()
 
-        api_ip = config["sonarr"]["api_ip"]
-        api_port = config["sonarr"]["api_port"]
-        api_key = config["sonarr"]["api_key"]
+        api_ip = config["api_ip"]
+        api_port = config["api_port"]
+        api_key = config["api_key"]
 
         # Construir la URL base de la API de Sonarr
         self.base_url = f"http://{api_ip}:{api_port}"

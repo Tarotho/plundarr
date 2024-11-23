@@ -10,9 +10,8 @@ logger = logging.getLogger(__name__)
 class Telegram:
     def __init__(self):
         config = generate_telegram_configuration()
-        telegram_config = config.get("telegram", {})
-        self.bot_token = telegram_config.get("bot_token")
-        self.chat_id = telegram_config.get("chat_id")
+        self.bot_token = config["bot_token"]
+        self.chat_id = config["chat_id"]
 
         if not self.bot_token or not self.chat_id:
             logger.error("Faltan datos de configuración para Telegram en config.yaml")
