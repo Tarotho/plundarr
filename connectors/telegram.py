@@ -3,7 +3,7 @@ import yaml
 
 
 class Telegram:
-    def __init__(self, config_path="data/config.yaml"):
+    def __init__(self, config_path="config/config.yaml"):
         """
         Inicializa el bot de Telegram leyendo los datos del archivo de configuración.
 

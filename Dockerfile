@@ -11,7 +11,7 @@ COPY data/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiamos el proyecto al contenedor
-COPY . /app/src
+COPY . /app
 
 # Exponemos el puerto 80 si es necesario (si tu aplicación usa un servidor web, por ejemplo)
 # EXPOSE 80

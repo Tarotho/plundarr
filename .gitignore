@@ -25,5 +25,5 @@ node_modules/
 venv/
 media/
 downloads/
-/data/config.yaml
+/config/config.yaml
 /data/save.json
