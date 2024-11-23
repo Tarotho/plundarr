@@ -40,7 +40,7 @@ def validate_series_yaml(data):
     if is_valid:
         print("El archivo YAML está correctamente configurado.")
     else:
-        print("El archivo YAML tiene errores. Revísalos. Se volverá a intentar en 10 minutos")
+        print("El archivo YAML tiene errores. Modifíquelo antes de continuar")
 
     return is_valid  # Devuelve True si es válido, False si tiene errores
 
@@ -58,7 +58,5 @@ def generate_config_file():
             'chat_id': os.getenv('TELEGRAM_CHAT_ID', '')
         }
     }
-
-    print(config)
 
     return config
