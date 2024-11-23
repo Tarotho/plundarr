@@ -49,18 +49,25 @@ def validate_series_yaml(data):
     return is_valid  # Devuelve True si es válido, False si tiene errores
 
 
-def generate_config_file():
+def generate_telegram_configuration():
     config = {
-        'download_interval': os.getenv('DOWNLOAD_INTERVAL', '60'),
+        'telegram': {
+            'bot_token': os.getenv('TELEGRAM_BOT_TOKEN', ''),
+            'chat_id': os.getenv('TELEGRAM_CHAT_ID', '')
+        }
+    }
+    logger.debug(config)
+
+    return config
+
+
+def generate_sonarr_configuration():
+    config = {
         'sonarr': {
             'api_ip': os.getenv('SONARR_API_IP', ''),
             'api_port': os.getenv('SONARR_API_PORT', ''),
             'api_key': os.getenv('SONARR_API_KEY', '')
         },
-        'telegram': {
-            'bot_token': os.getenv('TELEGRAM_BOT_TOKEN', ''),
-            'chat_id': os.getenv('TELEGRAM_CHAT_ID', '')
-        }
     }
     logger.debug(config)
 

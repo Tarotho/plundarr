@@ -1,4 +1,5 @@
 import logging
+import os
 import shutil
 import time
 
@@ -7,7 +8,7 @@ import yaml
 from connectors.telegram import activate_telegram
 from connectors.youtube import get_playlist_info
 from managers.episodeManager import generate_episode_information
-from managers.fileManager import validate_series_yaml, generate_config_file
+from managers.fileManager import validate_series_yaml, generate_telegram_configuration
 from managers.seriesManager import download_video
 from utils.save import load_downloaded_episodes, is_episode_downloaded
 
@@ -24,7 +25,7 @@ def load_series_list():
         return None
 
 
-def main(config):
+def main():
     downloaded_episodes = load_downloaded_episodes()  # Cargar los episodios ya descargados desde save.json
 
     wished_series_list = load_series_list()
@@ -44,15 +45,15 @@ def main(config):
                         continue
                     logger.info(f'Se procede a descargar {title_video}')
                     episode_information = generate_episode_information(video_information, wished_series)
-                    telegram = activate_telegram(config.get('telegram'))
+                    telegram = activate_telegram(generate_telegram_configuration())
                     download_video(episode_information, downloaded_episodes, telegram)
 
 
 if __name__ == "__main__":
-    shutil.copy("data/series.yaml", "config/series.yaml")
-    config_file = generate_config_file()  # Vuelve a cargar la configuración en cada ciclo
+    if not os.path.exists("config/series.yaml"):
+        shutil.copy("data/series.yaml", "config/series.yaml")
     while True:  # Ciclo infinito
-        main(config_file)
-        download_interval = config_file.get("download_interval", 60)
+        main()
+        download_interval = os.getenv('DOWNLOAD_INTERVAL', '60')
         logger.info(f"Esperando {download_interval} minutos antes de la siguiente ejecución...")
         time.sleep(int(download_interval) * 60)  # Dormir por el intervalo (convertido a segundos)

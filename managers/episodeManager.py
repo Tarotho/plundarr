@@ -102,6 +102,7 @@ def import_episode_using_sonarr(episode_path):
 
 
 def get_series_information(series_name):
+    logger.info('se instancia Sonarr')
     sonarr = Sonarr()
     series_data = sonarr.get_series()
     # Iterar sobre las series y buscar la que coincida con el título proporcionado

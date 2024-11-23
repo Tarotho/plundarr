@@ -3,6 +3,8 @@ import logging
 import requests
 import yaml
 
+from managers.fileManager import generate_sonarr_configuration
+
 logger = logging.getLogger(__name__)
 
 
@@ -14,8 +16,8 @@ def load_config(config_path):
 
 class Sonarr:
 
-    def __init__(self, config_path="config/config.yaml"):
-        config = load_config(config_path)
+    def __init__(self):
+        config = generate_sonarr_configuration()
 
         api_ip = config["sonarr"]["api_ip"]
         api_port = config["sonarr"]["api_port"]
@@ -28,11 +30,14 @@ class Sonarr:
                         "X-Api-Key": api_key}
 
     def get_series(self):
+        logger.info('se intenta capturar la informacion de las series de Sonarr')
         url = f"{self.base_url}/api/v3/series"
         response = requests.get(url, headers=self.headers)
         if response.status_code == 200:
+            logger.info('La informacion se acptura correctamente')
             return response.json()
         else:
+            logger.error('hay un error al capturar las series')
             return f"Error al obtener las series: {response.status_code}"
 
     def get_episodes_from_series_id(self, series_id):
