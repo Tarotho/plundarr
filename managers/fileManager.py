@@ -58,5 +58,6 @@ def generate_config_file():
             'chat_id': os.getenv('TELEGRAM_CHAT_ID', '')
         }
     }
+    print(config)
 
     return config
