@@ -59,5 +59,5 @@ def load_and_replace_env_vars(yaml_file):
             # Reemplazar las variables de entorno dentro de las cadenas
             config[key] = os.path.expandvars(value)
             print(f'se modifica el valor {key} por {os.path.expandvars(value)}')
-
+    print(os.getenv('DOWNLOAD_INTERVAL'))
     return config
