@@ -52,4 +52,4 @@ if __name__ == "__main__":
         main(config_file)
         download_interval = config_file.get("download_interval", 60)
         print(f"Esperando {download_interval} minutos antes de la siguiente ejecución...")
-        time.sleep(download_interval * 60)  # Dormir por el intervalo (convertido a segundos)
+        time.sleep(int(download_interval) * 60)  # Dormir por el intervalo (convertido a segundos)
