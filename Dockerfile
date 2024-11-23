@@ -12,15 +12,20 @@ ARG PGID=1000
 RUN groupadd -g ${PGID} appgroup && \
     useradd -u ${PUID} -g appgroup -m appuser
 
-# Cambia el propietario del directorio de trabajo al nuevo usuario
-RUN chown -R appuser:appgroup /app
 # Copiamos el archivo de requisitos en el contenedor
 COPY data/requirements.txt /app/requirements.txt
+
 # Instalamos las dependencias necesarias
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiamos el proyecto al contenedor
 COPY . /app
+
+# Cambia el propietario de los directorios de datos y configuración a appuser
+RUN chown -R appuser:appgroup /app /app/data /app/config
+
+# Cambiar al usuario normal (no root) para la ejecución del contenedor
+USER appuser
 
 # Exponemos el puerto 80 si es necesario (si tu aplicación usa un servidor web, por ejemplo)
 # EXPOSE 80
