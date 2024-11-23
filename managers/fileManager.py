@@ -48,24 +48,16 @@ def validate_series_yaml(data):
 
 
 def load_and_replace_env_vars(yaml_file):
-    print('Cargamos el fichero de configuracion')
+    print('cargamos el fichero de configuracion')
     with open(yaml_file, "r") as file:
         config = yaml.safe_load(file)
         print(config)
-
     # Reemplazar las variables de entorno en el archivo YAML
     for key, value in config.items():
         print(key, value)
         if isinstance(value, str):
-            # Expansión de las variables de entorno
-            expanded_value = os.path.expandvars(value)
-
-            # Si la variable de entorno no está definida, se puede establecer un valor por defecto
-            if expanded_value == value:  # Si no se ha expandido, asignamos el valor por defecto
-                expanded_value = os.getenv(key.upper(),
-                                           value)  # Usa el nombre de la clave en mayúsculas como variable de entorno
-
-            config[key] = expanded_value
-            print(f'Se modifica el valor {key} por {expanded_value}')
+            # Reemplazar las variables de entorno dentro de las cadenas
+            config[key] = os.path.expandvars(value)
+            print(f'se modifica el valor {key} por {os.path.expandvars(value)}')
 
     return config
