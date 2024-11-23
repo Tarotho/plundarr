@@ -1,5 +1,4 @@
 import shutil
-import sys
 import time
 
 import yaml
@@ -58,12 +57,10 @@ if __name__ == "__main__":
     shutil.move("data/series.yaml", "config/series.yaml")
     while True:  # Ciclo infinito
         config_file = load_config()  # Vuelve a cargar la configuración en cada ciclo
-        validate_series_yaml(config_file)
-        if config_file is None:
-            print("No se pudo cargar la configuración correctamente, saliendo de la aplicación.")
-            sys.exit(1)  # Termina la aplicación si hay un error al cargar la configuración
-
-        main(config_file)
-        download_interval = config_file.get("download_interval", 60)
-        print(f"Esperando {download_interval} minutos antes de la siguiente ejecución...")
-        time.sleep(download_interval * 60)  # Dormir por el intervalo (convertido a segundos)
+        if validate_series_yaml(config_file):
+            main(config_file)
+            download_interval = config_file.get("download_interval", 60)
+            print(f"Esperando {download_interval} minutos antes de la siguiente ejecución...")
+            time.sleep(download_interval * 60)  # Dormir por el intervalo (convertido a segundos)
+        else:
+            time.sleep(600)  # esperar 10 minutos y volver a intentar
