@@ -46,7 +46,7 @@ def main(config):
 
 
 if __name__ == "__main__":
-    shutil.move("data/series.yaml", "config/series.yaml")
+    shutil.copy("data/series.yaml", "config/series.yaml")
     config_file = generate_config_file()  # Vuelve a cargar la configuración en cada ciclo
     while True:  # Ciclo infinito
         main(config_file)

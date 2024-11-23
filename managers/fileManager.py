@@ -1,4 +1,5 @@
 import os
+import shutil
 
 
 def validate_series_yaml(data):
@@ -41,7 +42,7 @@ def validate_series_yaml(data):
         print("El archivo YAML está correctamente configurado.")
     else:
         print("El archivo YAML tiene errores. Modifíquelo antes de continuar")
-
+    shutil.copy("config/series.yaml", "data/series.yaml")
     return is_valid  # Devuelve True si es válido, False si tiene errores
 
 
