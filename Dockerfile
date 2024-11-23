@@ -5,7 +5,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copiamos el archivo de requisitos en el contenedor
-COPY src/data/requirements.txt /app/requirements.txt
+COPY data/requirements.txt /app/requirements.txt
 
 # Instalamos las dependencias necesarias
 RUN pip install --no-cache-dir -r requirements.txt
@@ -17,4 +17,4 @@ COPY src /app/src
 # EXPOSE 80
 
 # Definimos el comando por defecto para ejecutar la aplicación
-CMD ["python", "src/main.py"]
+CMD ["python", "main.py"]

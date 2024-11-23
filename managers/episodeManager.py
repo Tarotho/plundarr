@@ -1,7 +1,7 @@
-from src.connectors.sonarr import Sonarr
-from src.utils.utils import episode_title_reduction, sanitize_filename, format_episode_title, generate_command, \
+from connectors.sonarr import Sonarr
+from connectors.youtube import get_format_info
+from utils.utils import episode_title_reduction, sanitize_filename, format_episode_title, generate_command, \
     word_count_overlap
-from src.connectors.youtube import get_format_info
 
 
 def generate_episode_information(video_information, wished_series):

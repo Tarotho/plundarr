@@ -1,8 +1,8 @@
-from src.connectors.telegram import Telegram
-from src.connectors.youtube import download_episode
-from src.managers.episodeManager import import_episode_using_sonarr
-from src.utils.save import save_downloaded_episodes
-from src.utils.utils import move_files
+from connectors.telegram import Telegram
+from connectors.youtube import download_episode
+from managers.episodeManager import import_episode_using_sonarr
+from utils.save import save_downloaded_episodes
+from utils.utils import move_files
 
 
 def download_video(episode_information, downloaded_episodes, telegram):
