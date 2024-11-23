@@ -3,11 +3,11 @@ import time
 
 import yaml
 
-from src.connectors.telegram import activate_telegram
-from src.connectors.youtube import get_playlist_info
-from src.managers.episodeManager import generate_episode_information
-from src.managers.seriesManager import download_video
-from src.utils.save import load_downloaded_episodes, is_episode_downloaded
+from connectors.telegram import activate_telegram
+from connectors.youtube import get_playlist_info
+from managers.episodeManager import generate_episode_information
+from managers.seriesManager import download_video
+from utils.save import load_downloaded_episodes, is_episode_downloaded
 
 
 def load_config():
