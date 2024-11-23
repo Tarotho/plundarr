@@ -1,7 +1,5 @@
 import os
 
-import yaml
-
 
 def validate_series_yaml(data):
     is_valid = True  # Iniciamos con la suposición de que es válido
@@ -47,17 +45,20 @@ def validate_series_yaml(data):
     return is_valid  # Devuelve True si es válido, False si tiene errores
 
 
-def load_and_replace_env_vars(yaml_file):
-    print('cargamos el fichero de configuracion')
-    with open(yaml_file, "r") as file:
-        config = yaml.safe_load(file)
-        print(config)
-    # Reemplazar las variables de entorno en el archivo YAML
-    for key, value in config.items():
-        print(key, value)
-        if isinstance(value, str):
-            # Reemplazar las variables de entorno dentro de las cadenas
-            config[key] = os.path.expandvars(value)
-            print(f'se modifica el valor {key} por {os.path.expandvars(value)}')
-    print(os.getenv('DOWNLOAD_INTERVAL'))
+def generate_config_file():
+    config = {
+        'download_interval': os.getenv('DOWNLOAD_INTERVAL', '60'),
+        'sonarr': {
+            'api_ip': os.getenv('SONARR_API_IP', ''),
+            'api_port': os.getenv('SONARR_API_PORT', ''),
+            'api_key': os.getenv('SONARR_API_KEY', '')
+        },
+        'telegram': {
+            'bot_token': os.getenv('TELEGRAM_BOT_TOKEN', ''),
+            'chat_id': os.getenv('TELEGRAM_CHAT_ID', '')
+        }
+    }
+
+    print(config)
+
     return config

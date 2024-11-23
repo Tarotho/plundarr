@@ -6,7 +6,7 @@ import yaml
 from connectors.telegram import activate_telegram
 from connectors.youtube import get_playlist_info
 from managers.episodeManager import generate_episode_information
-from managers.fileManager import validate_series_yaml, load_and_replace_env_vars
+from managers.fileManager import validate_series_yaml, generate_config_file
 from managers.seriesManager import download_video
 from utils.save import load_downloaded_episodes, is_episode_downloaded
 
@@ -48,7 +48,7 @@ def main(config):
 if __name__ == "__main__":
     shutil.move("data/series.yaml", "config/series.yaml")
     while True:  # Ciclo infinito
-        config_file = load_and_replace_env_vars("data/config.yaml")  # Vuelve a cargar la configuración en cada ciclo
+        config_file = generate_config_file()  # Vuelve a cargar la configuración en cada ciclo
         main(config_file)
         download_interval = config_file.get("download_interval", 60)
         print(f"Esperando {download_interval} minutos antes de la siguiente ejecución...")
