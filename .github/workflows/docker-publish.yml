@@ -1,0 +1,39 @@
+name: Autopublicación cuando creo una rama release
+
+on:
+  push:
+    branches:
+      - release/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Configura tu repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Accede a DockerHub
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Extrae el tag desde el nombre de la rama
+      - name: Extract Tag
+        id: extract_tag
+        run: echo "::set-output name=version::${GITHUB_REF#refs/heads/release/}"
+
+      # Construye la imagen
+      - name: Build Docker Image
+        run: |
+          docker build -t tarotho/plundarr:latest .
+          docker build -t tarotho/plundarr:${{ steps.extract_tag.outputs.version }} .
+
+      # Publica la imagen en DockerHub
+      - name: Push Docker Image
+        run: |
+          docker push tarotho/plundarr:latest
+          docker push tarotho/plundarr:${{ steps.extract_tag.outputs.version }}
