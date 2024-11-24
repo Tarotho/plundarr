@@ -11,8 +11,12 @@ ARG PGID=1000
 # Instalamos dependencias del sistema necesarias, incluyendo ffmpeg
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    ffmpeg \
+    ffmpeg build-essential \
     && rm -rf /var/lib/apt/lists/*
+
+# Instalar Rust y Cargo
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Crea el grupo y usuario con los IDs especificados
 RUN groupadd -g ${PGID} appgroup && \
