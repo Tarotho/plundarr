@@ -2,7 +2,7 @@ import logging
 import os
 import shutil
 
-from connectors.sonarr import Sonarr
+from managers.seriesManager import save_youtube_tag_id
 from utils.save import save_conf
 
 logger = logging.getLogger(__name__)
@@ -81,15 +81,4 @@ def generate_sonarr_configuration():
     return config
 
 
-# Función para buscar el ID del tag llamado "YouTube"
-def save_youtube_tag_id():
-    sonarr = Sonarr()
 
-    tags = sonarr.get_tags()
-    for tag in tags:
-        if tag["label"].lower() == "youtube":
-            config = {
-                'sonarr_youtube_tag': tag['id']
-            }
-            save_conf(config, 'sonarr')
-    return None

@@ -3,7 +3,7 @@ import logging
 import requests
 import yaml
 
-from managers.fileManager import generate_sonarr_configuration
+from utils.save import read_conf
 
 logger = logging.getLogger(__name__)
 
@@ -17,11 +17,12 @@ def load_config(config_path):
 class Sonarr:
 
     def __init__(self):
-        config = generate_sonarr_configuration()
+        config_parser = read_conf()
+        sonarr_config = config_parser['sonarr']
 
-        api_ip = config["api_ip"]
-        api_port = config["api_port"]
-        api_key = config["api_key"]
+        api_ip = sonarr_config.get("api_ip")
+        api_port = sonarr_config.get("api_port")
+        api_key = sonarr_config.get("api_key")
 
         # Construir la URL base de la API de Sonarr
         self.base_url = f"http://{api_ip}:{api_port}"

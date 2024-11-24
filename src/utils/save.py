@@ -1,9 +1,5 @@
-import configparser
 import json
 import logging
-import os
-
-from managers.fileManager import generate_telegram_configuration, generate_sonarr_configuration
 
 logger = logging.getLogger(__name__)
 
@@ -56,23 +52,38 @@ def save_conf(config, section, file_path='config/plundarr.conf'):
         logger.error(f"Error al guardar la configuración: {e}")
 
 
+import configparser
+import os
+
 def read_conf(file_path='config/plundarr.conf'):
     # Crear objeto ConfigParser
     config_parser = configparser.ConfigParser()
 
-    # Leer el archivo de configuración
-    config_parser.read(file_path)
-
-    # Verificar si se ha leído el archivo correctamente
-    if not config_parser.sections():
-        print(f"No se encontraron secciones en el archivo {file_path}.")
+    # Verificar si el archivo existe antes de intentar leerlo
+    if not os.path.exists(file_path):
+        print(f"El archivo {file_path} no existe.")
         return None
 
-    # Mostrar todas las secciones del archivo
-    print("Secciones disponibles:")
-    for section in config_parser.sections():
-        print(f"[{section}]")
-        for key, value in config_parser.items(section):
-            print(f"{key} = {value}")
+    try:
+        # Leer el archivo de configuración
+        config_parser.read(file_path, encoding='utf-8')
 
-    return config_parser
+        # Verificar si se han cargado secciones
+        if not config_parser.sections():
+            print(f"No se encontraron secciones en el archivo {file_path}.")
+            return None
+
+        # Mostrar todas las secciones del archivo
+        print("Secciones disponibles:")
+        for section in config_parser.sections():
+            print(f"[{section}]")
+            for key, value in config_parser.items(section):
+                print(f"{key} = {value}")
+
+        # Retornar el objeto config_parser para uso posterior
+        return config_parser
+
+    except Exception as e:
+        print(f"Error al leer el archivo de configuración: {e}")
+        return None
+
