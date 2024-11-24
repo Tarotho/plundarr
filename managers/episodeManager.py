@@ -27,7 +27,7 @@ def generate_episode_information(video_information, wished_series):
         "youtubeTitle": video_information['title'],
         "youtubeUrl": video_information['url'],
         "seriesTitle": sonarr_series_information.get("title"),
-        "downloadsPath": "../downloads",
+        "downloadsPath": "./downloads",
         "sonarrPath": os.getenv('SONARR_PATH', ''),
         "seriesPath": sonarr_series_information.get("path"),
         "episodePath": f"{sonarr_series_information.get('path')}/"
