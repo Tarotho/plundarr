@@ -20,13 +20,13 @@ RUN groupadd -g ${PGID} appgroup && \
     useradd -u ${PUID} -g appgroup -m appuser
 
 # Copiamos el archivo de requisitos en el contenedor
-COPY data/requirements.txt /app/requirements.txt
+COPY src/data/requirements.txt /app/requirements.txt
 
 # Instalamos las dependencias necesarias
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiamos el proyecto al contenedor
-COPY . /app
+COPY src/. /app
 
 # Cambia el propietario de los directorios de datos y configuración a appuser
 RUN chown -R appuser:appgroup /app /app/data /app/config
