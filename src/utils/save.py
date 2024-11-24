@@ -1,7 +1,12 @@
+import configparser
 import json
 import logging
+import os
+
+from managers.fileManager import generate_telegram_configuration, generate_sonarr_configuration
 
 logger = logging.getLogger(__name__)
+
 
 # Leer los episodios descargados desde save.json
 def load_downloaded_episodes():
@@ -23,3 +28,51 @@ def save_downloaded_episodes(episodes):
 
 def is_episode_downloaded(title_video, downloaded_episodes):
     return title_video in downloaded_episodes
+
+
+def save_conf(config, section, file_path='config/plundarr.conf'):
+    # Crear objeto ConfigParser
+    config_parser = configparser.ConfigParser()
+
+    # Intentar leer el archivo de configuración si ya existe
+    if os.path.exists(file_path):
+        config_parser.read(file_path)
+
+    # Añadir o actualizar la sección
+    if section not in config_parser.sections():
+        config_parser.add_section(section)
+
+    # Añadir las opciones de configuración en la sección correspondiente
+    for key, value in config.items():
+        config_parser.set(section, key, value)
+
+    try:
+        # Guardar el archivo, actualizando el contenido
+        with open(file_path, 'w', encoding='utf-8') as configfile:
+            config_parser.write(configfile)
+
+        logger.info(f"Configuración guardada/actualizada en {file_path}")
+    except Exception as e:
+        logger.error(f"Error al guardar la configuración: {e}")
+
+
+def read_conf(file_path='config/plundarr.conf'):
+    # Crear objeto ConfigParser
+    config_parser = configparser.ConfigParser()
+
+    # Leer el archivo de configuración
+    config_parser.read(file_path)
+
+    # Verificar si se ha leído el archivo correctamente
+    if not config_parser.sections():
+        print(f"No se encontraron secciones en el archivo {file_path}.")
+        return None
+
+    # Mostrar todas las secciones del archivo
+    print("Secciones disponibles:")
+    for section in config_parser.sections():
+        print(f"[{section}]")
+        for key, value in config_parser.items(section):
+            print(f"{key} = {value}")
+
+    return config_parser

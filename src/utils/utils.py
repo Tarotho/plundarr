@@ -106,7 +106,7 @@ def format_episode_title(episode_information):
     return formatted_title
 
 
-def gen_env_conf():
+def move_env_conf():
     logger.debug(f'el contenido de la carpeta data es {os.listdir("/app/data")}')
     if not os.path.exists("/app/config/series.yaml"):
         logger.info('no se ha localizado series.yaml, se intenta copiar')

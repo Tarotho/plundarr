@@ -29,3 +29,8 @@ def download_video(episode_information, downloaded_episodes, telegram):
                 telegram.send_message(
                     f"no se ha podido importar {episode_information['finalEpisodeTitle']}, "
                     f"por favor, importalo manualmente")
+
+
+# Función para filtrar las series que contienen el ID del tag
+def filter_series_by_tag(tag_id, series):
+    return [serie['title'] for serie in series if tag_id in serie.get("tags", [])]

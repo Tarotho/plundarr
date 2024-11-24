@@ -2,6 +2,9 @@ import logging
 import os
 import shutil
 
+from connectors.sonarr import Sonarr
+from utils.save import save_conf
+
 logger = logging.getLogger(__name__)
 
 
@@ -49,13 +52,19 @@ def validate_series_yaml(data):
     return is_valid  # Devuelve True si es válido, False si tiene errores
 
 
+def generate_conf():
+    generate_sonarr_configuration()
+    generate_telegram_configuration()
+    save_youtube_tag_id()
+
+
 def generate_telegram_configuration():
     config = {
         'bot_token': os.getenv('TELEGRAM_BOT_TOKEN', ''),
         'chat_id': os.getenv('TELEGRAM_CHAT_ID', '')
-        }
+    }
+    save_conf(config, 'telegram')
     logger.debug(config)
-
     return config
 
 
@@ -65,7 +74,22 @@ def generate_sonarr_configuration():
         'api_port': os.getenv('SONARR_API_PORT', ''),
         'api_key': os.getenv('SONARR_API_KEY', '')
     }
+    save_conf(config, 'sonarr')
 
     logger.debug(config)
 
     return config
+
+
+# Función para buscar el ID del tag llamado "YouTube"
+def save_youtube_tag_id():
+    sonarr = Sonarr()
+
+    tags = sonarr.get_tags()
+    for tag in tags:
+        if tag["label"].lower() == "youtube":
+            config = {
+                'sonarr_youtube_tag': tag['id']
+            }
+            save_conf(config, 'sonarr')
+    return None

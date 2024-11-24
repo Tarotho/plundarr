@@ -7,10 +7,10 @@ import yaml
 from connectors.telegram import activate_telegram
 from connectors.youtube import get_playlist_info
 from managers.episodeManager import generate_episode_information
-from managers.fileManager import validate_series_yaml, generate_telegram_configuration
+from managers.fileManager import validate_series_yaml, generate_telegram_configuration, generate_conf
 from managers.seriesManager import download_video
-from utils.save import load_downloaded_episodes, is_episode_downloaded
-from utils.utils import gen_env_conf
+from utils.save import load_downloaded_episodes, is_episode_downloaded, read_conf
+from utils.utils import move_env_conf
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,6 @@ def load_series_list():
 
 def main():
     downloaded_episodes = load_downloaded_episodes()  # Cargar los episodios ya descargados desde save.json
-
     wished_series_list = load_series_list()
     if validate_series_yaml(wished_series_list):
         for wished_series in wished_series_list:
@@ -50,7 +49,10 @@ def main():
 
 
 if __name__ == "__main__":
-    gen_env_conf()
+    generate_conf()
+    config = read_conf()
+    logger.debug(config)
+    move_env_conf()
     while True:  # Ciclo infinito
         main()
         download_interval = os.getenv('DOWNLOAD_INTERVAL', '60')

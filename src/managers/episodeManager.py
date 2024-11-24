@@ -112,3 +112,9 @@ def get_series_information(series_name):
             return series
             # Si no se encuentra ninguna serie con el título dado
     return "Serie no encontrada"
+
+
+
+
+
+

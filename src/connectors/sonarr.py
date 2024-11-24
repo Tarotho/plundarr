@@ -77,3 +77,8 @@ class Sonarr:
                 logger.error(f"Ha ocurrido un error mientras se importaba {episode['files']['path']}: {err}")
                 # Opcional: podrías relanzar una excepción genérica si lo prefieres
                 raise RuntimeError("Ha ocurrido un error durante el proceso de importación.")
+
+    def get_tags(self):
+        url = f"{self.base_url}/api/v3/tag"
+        response = requests.get(url, headers=self.headers)
+        return response.json() if response.status_code == 200 else None
