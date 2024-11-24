@@ -1,8 +1,0 @@
-download_interval: ${DOWNLOAD_INTERVAL:-60}  # Valor predeterminado: 60 minutos
-sonarr:
-  api_ip: ${SONARR_API_IP}
-  api_port: ${SONARR_API_PORT}
-  api_key: ${SONARR_API_KEY}
-telegram:
-  bot_token: ${TELEGRAM_BOT_TOKEN}
-  chat_id: ${TELEGRAM_CHAT_ID}

@@ -3,4 +3,3 @@ pyyaml
 yt-dlp
 fastapi
 uvicorn
-ffmpeg-python

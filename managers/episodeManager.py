@@ -1,7 +1,11 @@
-from src.connectors.sonarr import Sonarr
-from src.utils.utils import episode_title_reduction, sanitize_filename, format_episode_title, generate_command, \
+import logging
+
+from connectors.sonarr import Sonarr
+from connectors.youtube import get_format_info
+from utils.utils import episode_title_reduction, sanitize_filename, format_episode_title, generate_command, \
     word_count_overlap
-from src.connectors.youtube import get_format_info
+
+logger = logging.getLogger(__name__)
 
 
 def generate_episode_information(video_information, wished_series):
@@ -22,7 +26,7 @@ def generate_episode_information(video_information, wished_series):
         "youtubeTitle": video_information['title'],
         "youtubeUrl": video_information['url'],
         "seriesTitle": sonarr_series_information.get("title"),
-        "downloadsPath": "/downloads/youtubarr",
+        "downloadsPath": "/plundarr",
         "seriesPath": sonarr_series_information.get("path"),
         "episodePath": f"{sonarr_series_information.get('path')}/"
                        f"Season {sonarr_episodes_information.get('seasonNumber'):02}",
@@ -44,6 +48,7 @@ def generate_episode_information(video_information, wished_series):
     episode_information.update({
         "command": command
     })
+    logger.debug(command)
     return episode_information
 
 
@@ -64,7 +69,7 @@ def get_episode_information_from_sonarr(episode_title, series_id):
 
 def get_episode_data(episode_information):
     episode_data = []
-    print("extrayendo información usando el api sonarr")
+    logger.info("extrayendo información usando el api sonarr")
     for episode in episode_information:
         data = {
             "name": "ManualImport",
@@ -85,19 +90,20 @@ def get_episode_data(episode_information):
 
 def import_episode_using_sonarr(episode_path):
     sonarr = Sonarr()
-    print("intentando capiturar informacion del episodio")
+    logger.info("intentando capiturar informacion del episodio")
     try:
         response = sonarr.get_episodes(episode_path)
-        print("Sonarr a retornado informacion adecuada")
+        logger.info("Sonarr a retornado informacion adecuada")
         sonarr.import_episodes(get_episode_data(response))
-        print('sonarr ha importado los episodios correctamente')
+        logger.info('sonarr ha importado los episodios correctamente')
         return True
     except Exception as e:
-        print(f"Error al importar episodio: {e}")
+        logger.error(f"Error al importar episodio: {e}")
         return False
 
 
 def get_series_information(series_name):
+    logger.info('se instancia Sonarr')
     sonarr = Sonarr()
     series_data = sonarr.get_series()
     # Iterar sobre las series y buscar la que coincida con el título proporcionado

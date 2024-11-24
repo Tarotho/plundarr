@@ -1,0 +1,17 @@
+services:
+  plundarr:
+    container_name: plundarr
+    image: plundar
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - DOWNLOAD_INTERVAL=60 # interval in minutes
+      - SONARR_API_IP=SONARR_IP # your Sonarr ip
+      - SONARR_API_PORT=SONARR_PORT # your sonarr port
+      - SONARR_API_KEY=YOUR_SONARR_API_KEY # your sonarr api key in Sysyem/General
+      - TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_TOKEN #OPTIONAL your sonarr bot token
+      - TELEGRAM_CHAT_ID=YOUR_CHAT_ID # your chat id from your bot in telegram
+      - SONARR_PATH=YOUR_ROUTE_FROM_SONARR #unique path to get de episodes in sonarr
+    volumes:
+      - ${DOCKER_PATH}/plundarr:/app/config
+      - ${HDD_PATH}/hdd3/downloads/plundarr:/downloads

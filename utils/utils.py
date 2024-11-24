@@ -1,6 +1,14 @@
+import logging
 import os
 import re
 import shutil
+
+# Configuración global de logging
+logging.basicConfig(
+    level=logging.DEBUG,  # Puedes elegir el nivel de log que necesites
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # Formato del log
+    handlers=[logging.StreamHandler()]  # Esto imprime los logs en la consola
+)
 
 
 def sanitize_filename(filename):
@@ -34,7 +42,8 @@ def generate_command(episode_information):
     # Definir el comando de yt-dlp
     command += ["--embed-metadata",
                 "--merge-output-format", "mkv"]
-    command += ["-o", f".{episode_information.get('downloadsPath')}{episode_information.get('finalEpisodeTitle')}.mkv",
+    command += ["-o",
+                f"..{episode_information.get('downloadsPath')}/{episode_information.get('finalEpisodeTitle')}.mkv",
                 episode_information['youtubeUrl']]
     return command
 

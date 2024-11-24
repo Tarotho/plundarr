@@ -1,8 +1,12 @@
-from src.connectors.telegram import Telegram
-from src.connectors.youtube import download_episode
-from src.managers.episodeManager import import_episode_using_sonarr
-from src.utils.save import save_downloaded_episodes
-from src.utils.utils import move_files
+import logging
+
+from connectors.telegram import Telegram
+from connectors.youtube import download_episode
+from managers.episodeManager import import_episode_using_sonarr
+from utils.save import save_downloaded_episodes
+from utils.utils import move_files
+
+logger = logging.getLogger(__name__)
 
 
 def download_video(episode_information, downloaded_episodes, telegram):
@@ -10,7 +14,7 @@ def download_video(episode_information, downloaded_episodes, telegram):
         telegram = Telegram()  # Crear una instancia de Telegram para enviar mensajes
 
     if download_episode(episode_information['command']):  # Descargar el episodio
-        print(f"Descarga completada")
+        logger.info(f"Descarga completada")
         downloaded_episodes.append(
             episode_information.get('youtubeTitle'))  # Si la descarga fue exitosa, agregar el episodio a la lista
         save_downloaded_episodes(downloaded_episodes)  # Guardar la lista actualizada de episodios descargados

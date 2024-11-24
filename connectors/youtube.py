@@ -1,6 +1,9 @@
+import logging
 import subprocess
 
 import yt_dlp
+
+logger = logging.getLogger(__name__)
 
 
 def get_format_info(url):
@@ -18,7 +21,7 @@ def download_episode(command):
         subprocess.run(command, check=True)
         return True  # Indicar que la descarga fue exitosa
     except subprocess.CalledProcessError as e:
-        print(f"Error al descargar el video: {e}")
+        logger.error(f"Error al descargar el video: {e}")
         return False  # Indicar que la descarga falló
 
 

@@ -1,10 +1,12 @@
 import json
+import logging
 
+logger = logging.getLogger(__name__)
 
 # Leer los episodios descargados desde save.json
 def load_downloaded_episodes():
     try:
-        with open("src/data/save.json", "r") as file:
+        with open("data/save.json", "r") as file:
             data = json.load(file)
             return data.get("downloads", [])
     except FileNotFoundError:
@@ -14,7 +16,8 @@ def load_downloaded_episodes():
 
 # Guardar los episodios descargados en save.json
 def save_downloaded_episodes(episodes):
-    with open("src/data/save.json", "w") as file:
+    logger.info('se procede a guardar la informacion de los capitulos descargados')
+    with open("data/save.json", "w") as file:
         json.dump({"downloads": episodes}, file, indent=4)
 
 
