@@ -26,7 +26,7 @@ def generate_episode_information(video_information, wished_series):
         "youtubeTitle": video_information['title'],
         "youtubeUrl": video_information['url'],
         "seriesTitle": sonarr_series_information.get("title"),
-        "downloadsPath": "./plundarr",
+        "downloadsPath": "/plundarr",
         "seriesPath": sonarr_series_information.get("path"),
         "episodePath": f"{sonarr_series_information.get('path')}/"
                        f"Season {sonarr_episodes_information.get('seasonNumber'):02}",

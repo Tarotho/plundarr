@@ -42,7 +42,8 @@ def generate_command(episode_information):
     # Definir el comando de yt-dlp
     command += ["--embed-metadata",
                 "--merge-output-format", "mkv"]
-    command += ["-o", f".{episode_information.get('downloadsPath')}/{episode_information.get('finalEpisodeTitle')}.mkv",
+    command += ["-o",
+                f"..{episode_information.get('downloadsPath')}/{episode_information.get('finalEpisodeTitle')}.mkv",
                 episode_information['youtubeUrl']]
     return command
 
