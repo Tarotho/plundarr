@@ -36,6 +36,7 @@ def download_video(episode_information, downloaded_episodes, telegram):
 def filter_series_by_tag(tag_id, series):
     return [serie['title'] for serie in series if tag_id in serie.get("tags", [])]
 
+
 # Función para buscar el ID del tag llamado "YouTube"
 def save_youtube_tag_id():
     sonarr = Sonarr()
@@ -44,8 +45,13 @@ def save_youtube_tag_id():
     for tag in tags:
         if tag["label"].lower() == "youtube":
             config = {
-                'sonarr_youtube_tag': str(tag['id'])
+                'youtube_tag': str(tag['id'])
             }
-            logger.debug(config)
             save_conf(config, 'sonarr')
     return None
+
+
+def generate_wished_series(tag_id):
+    sonarr = Sonarr()
+    series = sonarr.get_series()
+    return filter_series_by_tag(series, tag_id)

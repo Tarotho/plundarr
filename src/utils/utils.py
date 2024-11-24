@@ -108,9 +108,17 @@ def format_episode_title(episode_information):
 
 def move_env_conf():
     logger.debug(f'el contenido de la carpeta data es {os.listdir("/app/data")}')
-    if not os.path.exists("/app/config/series.yaml"):
-        logger.info('no se ha localizado series.yaml, se intenta copiar')
-        shutil.copy("/app/data/series.yaml", "/app/config/series.yaml")
-    if not os.path.exists("/app/config/save.json"):
-        logger.info('no se ha localizado save.json, se procede a copiar')
-        shutil.copy("/app/data/save.json", "/app/config/save.json")
+    destiny_path = "/app/config/"
+    origin_path = "/app/data/"
+    series = "series.yaml"
+    save = "save.json"
+    config = "plundar.conf"
+    if not os.path.exists(f"{destiny_path}{series}"):
+        logger.info(f'no se ha localizado {series}, se intenta copiar')
+        shutil.copy(f"{origin_path}{series}", f"{destiny_path}{series}")
+    if not os.path.exists(f"{destiny_path}{save}"):
+        logger.info(f'no se ha localizado {save}, se intenta copiar')
+        shutil.copy(f"{origin_path}{save}", f"{destiny_path}{save}")
+    if not os.path.exists(f"{destiny_path}{config}"):
+        logger.info(f'no se ha localizado {config}, se intenta copiar')
+        shutil.copy(f"{origin_path}{config}", f"{destiny_path}{config}")

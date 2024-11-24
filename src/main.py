@@ -2,27 +2,15 @@ import logging
 import os
 import time
 
-import yaml
-
 from connectors.telegram import activate_telegram
 from connectors.youtube import get_playlist_info
 from managers.episodeManager import generate_episode_information
 from managers.fileManager import validate_series_yaml, generate_telegram_configuration, generate_conf
 from managers.seriesManager import download_video
-from utils.save import load_downloaded_episodes, is_episode_downloaded, read_conf
+from utils.save import load_downloaded_episodes, is_episode_downloaded, load_series_list
 from utils.utils import move_env_conf
 
 logger = logging.getLogger(__name__)
-
-
-def load_series_list():
-    try:
-        with open("config/series.yaml", "r") as file:
-            series = yaml.safe_load(file)
-            return series['series']
-    except Exception as e:
-        logging.error(f"Error al cargar el archivo de configuración: {e}")
-        return None
 
 
 def main():
@@ -50,8 +38,6 @@ def main():
 
 if __name__ == "__main__":
     generate_conf()
-    config = read_conf()
-    logger.debug(config)
     move_env_conf()
     while True:  # Ciclo infinito
         main()

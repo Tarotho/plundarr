@@ -64,7 +64,6 @@ def generate_telegram_configuration():
         'chat_id': os.getenv('TELEGRAM_CHAT_ID', '')
     }
     save_conf(config, 'telegram')
-    logger.debug(config)
     return config
 
 

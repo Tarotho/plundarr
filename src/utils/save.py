@@ -1,6 +1,8 @@
 import json
 import logging
 
+import yaml
+
 logger = logging.getLogger(__name__)
 
 
@@ -55,6 +57,7 @@ def save_conf(config, section, file_path='config/plundarr.conf'):
 import configparser
 import os
 
+
 def read_conf(file_path='config/plundarr.conf'):
     # Crear objeto ConfigParser
     config_parser = configparser.ConfigParser()
@@ -87,3 +90,12 @@ def read_conf(file_path='config/plundarr.conf'):
         print(f"Error al leer el archivo de configuración: {e}")
         return None
 
+
+def load_series_list():
+    try:
+        with open("config/series.yaml", "r") as file:
+            series = yaml.safe_load(file)
+            return series['series']
+    except Exception as e:
+        logging.error(f"Error al cargar el archivo de configuración: {e}")
+        return None
