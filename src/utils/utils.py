@@ -10,6 +10,8 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()]  # Esto imprime los logs en la consola
 )
 
+logger = logging.getLogger(__name__)
+
 
 def sanitize_filename(filename):
     """
@@ -105,7 +107,10 @@ def format_episode_title(episode_information):
 
 
 def gen_env_conf():
-    if not os.path.exists("/config/series.yaml"):
-        shutil.copy("/data/series.yaml", "/config/series.yaml")
-    if not os.path.exists("/config/save.json"):
-        shutil.copy("/data/save.json", "/config/save.json")
+    logger.debug(f'el contenido de la carpeta data es {os.listdir("/app/data")}')
+    if not os.path.exists("/app/config/series.yaml"):
+        logger.info('no se ha localizado series.yaml, se intenta copiar')
+        shutil.copy("/app/data/series.yaml", "/app/config/series.yaml")
+    if not os.path.exists("/app/config/save.json"):
+        logger.info('no se ha localizado save.json, se procede a copiar')
+        shutil.copy("/app/data/save.json", "/app/config/save.json")
