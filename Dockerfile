@@ -8,18 +8,18 @@ WORKDIR /app
 ARG PUID=1000
 ARG PGID=1000
 
+# Instalamos dependencias del sistema necesarias, incluyendo ffmpeg
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/* \
+
 # Crea el grupo y usuario con los IDs especificados
 RUN groupadd -g ${PGID} appgroup && \
     useradd -u ${PUID} -g appgroup -m appuser
 
 # Copiamos el archivo de requisitos en el contenedor
 COPY data/requirements.txt /app/requirements.txt
-
-# Instalamos dependencias del sistema necesarias, incluyendo ffmpeg
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
 
 # Instalamos las dependencias necesarias
 RUN pip install --no-cache-dir -r requirements.txt
