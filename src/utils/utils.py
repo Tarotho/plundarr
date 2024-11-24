@@ -105,7 +105,7 @@ def format_episode_title(episode_information):
 
 
 def gen_env_conf():
-    if not os.path.exists("/app/config/series.yaml"):
-        shutil.copy("/app/data/series.yaml", "/app/config/series.yaml")
-    if not os.path.exists("/app/config/save.json"):
-        shutil.copy("/app/data/save.json", "/app/config/save.json")
+    if not os.path.exists("config/series.yaml"):
+        shutil.copy("data/series.yaml", "config/series.yaml")
+    if not os.path.exists("config/save.json"):
+        shutil.copy("data/save.json", "config/save.json")
