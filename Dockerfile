@@ -14,9 +14,6 @@ RUN apt-get update && \
     ffmpeg build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar Rust y Cargo
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Crea el grupo y usuario con los IDs especificados
 RUN groupadd -g ${PGID} appgroup && \
@@ -24,6 +21,9 @@ RUN groupadd -g ${PGID} appgroup && \
 
 # Copiamos el archivo de requisitos en el contenedor
 COPY data/requirements.txt /app/requirements.txt
+
+# actualizamos python
+RUN pip install -U pip
 
 # Instalamos las dependencias necesarias
 RUN pip install --no-cache-dir -r requirements.txt
