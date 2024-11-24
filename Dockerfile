@@ -1,5 +1,5 @@
 # Usamos una imagen base de Python
-FROM python:3.14.0a2-slim
+FROM python:3.13-slim
 
 # Establecemos el directorio de trabajo dentro del contenedor
 WORKDIR /app
@@ -11,7 +11,7 @@ ARG PGID=1000
 # Instalamos dependencias del sistema necesarias, incluyendo ffmpeg
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    ffmpeg build-essential \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 
@@ -21,9 +21,6 @@ RUN groupadd -g ${PGID} appgroup && \
 
 # Copiamos el archivo de requisitos en el contenedor
 COPY data/requirements.txt /app/requirements.txt
-
-# actualizamos python
-RUN pip install -U pip
 
 # Instalamos las dependencias necesarias
 RUN pip install --no-cache-dir -r requirements.txt
