@@ -9,10 +9,9 @@ ARG PUID=1000
 ARG PGID=1000
 
 # Instalamos dependencias del sistema necesarias, incluyendo ffmpeg
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    ffmpeg \
-    && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends ffmpeg
+RUN rm -rf /var/lib/apt/lists/* \
 
 # Crea el grupo y usuario con los IDs especificados
 RUN groupadd -g ${PGID} appgroup && \
