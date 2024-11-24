@@ -26,7 +26,7 @@ COPY src/data/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiamos el proyecto al contenedor
-COPY src/. /app
+COPY src/* /app
 
 # Cambia el propietario de los directorios de datos y configuración a appuser
 RUN chown -R appuser:appgroup /app /app/data /app/config
