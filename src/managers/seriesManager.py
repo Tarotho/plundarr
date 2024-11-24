@@ -44,7 +44,8 @@ def save_youtube_tag_id():
     for tag in tags:
         if tag["label"].lower() == "youtube":
             config = {
-                'sonarr_youtube_tag': tag['id']
+                'sonarr_youtube_tag': str(tag['id'])
             }
+            logger.debug(config)
             save_conf(config, 'sonarr')
     return None
