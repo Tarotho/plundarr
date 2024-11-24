@@ -1,6 +1,5 @@
 import logging
 import os
-import shutil
 import time
 
 import yaml
@@ -11,6 +10,7 @@ from managers.episodeManager import generate_episode_information
 from managers.fileManager import validate_series_yaml, generate_telegram_configuration
 from managers.seriesManager import download_video
 from utils.save import load_downloaded_episodes, is_episode_downloaded
+from utils.utils import gen_env_conf
 
 logger = logging.getLogger(__name__)
 
@@ -50,8 +50,7 @@ def main():
 
 
 if __name__ == "__main__":
-    if not os.path.exists("config/series.yaml"):
-        shutil.copy("data/series.yaml", "config/series.yaml")
+    gen_env_conf()
     while True:  # Ciclo infinito
         main()
         download_interval = os.getenv('DOWNLOAD_INTERVAL', '60')

@@ -102,3 +102,9 @@ def format_episode_title(episode_information):
     )
 
     return formatted_title
+
+def gen_env_conf():
+    if not os.path.exists("config/series.yaml"):
+        shutil.copy("data/series.yaml", "config/series.yaml")
+    if not os.path.exists("config/save.json"):
+        shutil.copy("data/save.json", "config/save.json")
