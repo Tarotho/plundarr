@@ -17,11 +17,14 @@
 - **Soporte Docker**: Fácil despliegue utilizando contenedores Docker.  
 
 
-### Próximos pasos  
+## Próximos pasos  
 
-- Mejorar la validación de configuraciones.  
-- Expandir la documentación y añadir ejemplos más detallados.  
-- Soporte para más servicios además de YouTube y Sonarr.  
+El proyecto está en constante evolución. Algunos de los objetivos para el futuro incluyen:  
+
+- **Mejorar la integración con Sonarr**: Ampliar la funcionalidad para permitir la búsqueda y gestión de series directamente desde Sonarr.  
+- **Incluir un buscador de YouTube**: Implementar un sistema que permita buscar y añadir listas de reproducción desde YouTube de forma más sencilla.  
+- **Crear una interfaz gráfica (WebUI)**: Desarrollar una interfaz web para gestionar configuraciones, listas de reproducción y descargas de manera intuitiva.  
+
 
 ## Configuración  
 
