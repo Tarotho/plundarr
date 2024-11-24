@@ -19,7 +19,7 @@ def download_video(episode_information, downloaded_episodes, telegram):
             episode_information.get('youtubeTitle'))  # Si la descarga fue exitosa, agregar el episodio a la lista
         save_downloaded_episodes(downloaded_episodes)  # Guardar la lista actualizada de episodios descargados
         # Intentar importar automáticamente el episodio
-        if import_episode_using_sonarr(episode_information.get('sonarrPath')):
+        if import_episode_using_sonarr(episode_information.get('downloadsPath')):
             if telegram:
                 telegram.send_message(
                     f"episodio {episode_information['finalEpisodeTitle']} importado por sonarr desde youtubarr")

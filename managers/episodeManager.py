@@ -1,5 +1,4 @@
 import logging
-import os
 
 from connectors.sonarr import Sonarr
 from connectors.youtube import get_format_info
@@ -27,8 +26,7 @@ def generate_episode_information(video_information, wished_series):
         "youtubeTitle": video_information['title'],
         "youtubeUrl": video_information['url'],
         "seriesTitle": sonarr_series_information.get("title"),
-        "downloadsPath": "./downloads",
-        "sonarrPath": os.getenv('SONARR_PATH', ''),
+        "downloadsPath": "./plundarr",
         "seriesPath": sonarr_series_information.get("path"),
         "episodePath": f"{sonarr_series_information.get('path')}/"
                        f"Season {sonarr_episodes_information.get('seasonNumber'):02}",
