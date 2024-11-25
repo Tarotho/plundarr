@@ -32,8 +32,12 @@ def main():
                         continue
                     logger.info(f'Se procede a descargar {title_video}')
                     episode_information = generate_episode_information(video_information, wished_series)
-                    telegram = activate_telegram(generate_telegram_configuration())
-                    download_video(episode_information, downloaded_episodes, telegram)
+                    if episode_information.get('monitored') is True:
+                        telegram = activate_telegram(generate_telegram_configuration())
+                        download_video(episode_information, downloaded_episodes, telegram)
+                    else:
+                        logger.info(
+                            f'el episodio {episode_information.get("seriesTitle")} - {episode_information.get("episodeTitle")} no está siendo monitorizado, no se descarga.')
 
 
 if __name__ == "__main__":
