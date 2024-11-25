@@ -36,6 +36,7 @@ def download_video(episode_information, downloaded_episodes, telegram):
 def filter_series_by_tag(tag_id):
     sonarr = Sonarr()
     series = sonarr.get_series()
+    logger.debug(series)
 
     series_list = [serie['title'] for serie in series if tag_id in serie.get("tags", [])]
     logger.debug(series_list)
