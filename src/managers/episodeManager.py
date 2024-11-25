@@ -1,7 +1,7 @@
 import logging
 
-from connectors.sonarr import Sonarr
-from connectors.youtube import get_format_info
+from connectors.sonarr.sonarr import Sonarr
+from connectors.youtube.youtube import get_format_info
 from utils.utils import episode_title_reduction, sanitize_filename, format_episode_title, generate_command, \
     word_count_overlap
 
@@ -26,6 +26,7 @@ def generate_episode_information(video_information, wished_series):
         "youtubeTitle": video_information['title'],
         "youtubeUrl": video_information['url'],
         "seriesTitle": sonarr_series_information.get("title"),
+        "seriesId": sonarr_series_information.get('id'),
         "downloadsPath": "/plundarr",
         "seriesPath": sonarr_series_information.get("path"),
         "episodePath": f"{sonarr_series_information.get('path')}/"
@@ -34,6 +35,7 @@ def generate_episode_information(video_information, wished_series):
         "episodeTitle": sonarr_episodes_information.get("title"),
         "seasonNumber": sonarr_episodes_information.get("seasonNumber"),
         "episodeNumber": sonarr_episodes_information.get("episodeNumber"),
+        "isMonitored": sonarr_series_information.get('monitored'),
         "resolution": best_video.get('height'),
         "subtitles_language": wished_series.get("subtitles_language", "").split(",") if wished_series.get(
             "subtitles_language") else [],

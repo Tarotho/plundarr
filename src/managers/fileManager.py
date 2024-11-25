@@ -1,5 +1,4 @@
 import logging
-import os
 import shutil
 
 logger = logging.getLogger(__name__)
@@ -49,23 +48,7 @@ def validate_series_yaml(data):
     return is_valid  # Devuelve True si es válido, False si tiene errores
 
 
-def generate_telegram_configuration():
-    config = {
-        'bot_token': os.getenv('TELEGRAM_BOT_TOKEN', ''),
-        'chat_id': os.getenv('TELEGRAM_CHAT_ID', '')
-        }
-    logger.debug(config)
-
-    return config
 
 
-def generate_sonarr_configuration():
-    config = {
-        'api_ip': os.getenv('SONARR_API_IP', ''),
-        'api_port': os.getenv('SONARR_API_PORT', ''),
-        'api_key': os.getenv('SONARR_API_KEY', '')
-    }
 
-    logger.debug(config)
 
-    return config

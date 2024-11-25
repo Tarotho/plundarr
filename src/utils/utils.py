@@ -10,6 +10,8 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()]  # Esto imprime los logs en la consola
 )
 
+logger = logging.getLogger(__name__)
+
 
 def sanitize_filename(filename):
     """
@@ -104,8 +106,19 @@ def format_episode_title(episode_information):
     return formatted_title
 
 
-def gen_env_conf():
-    if not os.path.exists("/config/series.yaml"):
-        shutil.copy("/data/series.yaml", "/config/series.yaml")
-    if not os.path.exists("/config/save.json"):
-        shutil.copy("/data/save.json", "/config/save.json")
+def move_env_conf():
+    logger.debug(f'el contenido de la carpeta data es {os.listdir("/app/data")}')
+    destiny_path = "/app/config/"
+    origin_path = "/app/data/"
+    series = "series.yaml"
+    save = "save.json"
+    config = "plundar.conf"
+    if not os.path.exists(f"{destiny_path}{series}"):
+        logger.info(f'no se ha localizado {series}, se intenta copiar')
+        shutil.copy(f"{origin_path}{series}", f"{destiny_path}{series}")
+    if not os.path.exists(f"{destiny_path}{save}"):
+        logger.info(f'no se ha localizado {save}, se intenta copiar')
+        shutil.copy(f"{origin_path}{save}", f"{destiny_path}{save}")
+    if not os.path.exists(f"{destiny_path}{config}"):
+        logger.info(f'no se ha localizado {config}, se intenta copiar')
+        shutil.copy(f"{origin_path}{config}", f"{destiny_path}{config}")

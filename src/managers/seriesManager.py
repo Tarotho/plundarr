@@ -1,7 +1,8 @@
 import logging
 
-from connectors.telegram import Telegram
-from connectors.youtube import download_episode
+from connectors.sonarr.sonarr import Sonarr
+from connectors.telegram.telegram import Telegram
+from connectors.youtube.youtube import download_episode
 from managers.episodeManager import import_episode_using_sonarr
 from utils.save import save_downloaded_episodes
 from utils.utils import move_files
@@ -29,3 +30,13 @@ def download_video(episode_information, downloaded_episodes, telegram):
                 telegram.send_message(
                     f"no se ha podido importar {episode_information['finalEpisodeTitle']}, "
                     f"por favor, importalo manualmente")
+
+
+# Función para filtrar las series que contienen el ID del tag
+def filter_series_by_tag(tag_id):
+    sonarr = Sonarr()
+    series = sonarr.get_series()
+
+    series_list = [serie['title'] for serie in series if int(tag_id) in serie.get("tags", [])]
+    logger.debug(f'las series encontradas son: {series_list}')
+    return series_list

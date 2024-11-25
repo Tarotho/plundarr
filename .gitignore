@@ -25,5 +25,8 @@ node_modules/
 venv/
 media/
 downloads/
-/src/data/config.yaml
-/src/data/save.json
+/src/config/downloaded.txt
+/src/config/plundarr.conf
+/src/config/series.yaml
+/src/data/series.yaml
+/sonarr_series.json

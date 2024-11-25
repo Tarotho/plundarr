@@ -1,27 +1,21 @@
 import logging
 
 import requests
-import yaml
 
-from managers.fileManager import generate_sonarr_configuration
+from utils.save import read_conf
 
 logger = logging.getLogger(__name__)
-
-
-def load_config(config_path):
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
 
 
 class Sonarr:
 
     def __init__(self):
-        config = generate_sonarr_configuration()
+        config_parser = read_conf()
+        sonarr_config = config_parser['sonarr']
 
-        api_ip = config["api_ip"]
-        api_port = config["api_port"]
-        api_key = config["api_key"]
+        api_ip = sonarr_config.get("api_ip")
+        api_port = sonarr_config.get("api_port")
+        api_key = sonarr_config.get("api_key")
 
         # Construir la URL base de la API de Sonarr
         self.base_url = f"http://{api_ip}:{api_port}"
@@ -77,3 +71,8 @@ class Sonarr:
                 logger.error(f"Ha ocurrido un error mientras se importaba {episode['files']['path']}: {err}")
                 # Opcional: podrías relanzar una excepción genérica si lo prefieres
                 raise RuntimeError("Ha ocurrido un error durante el proceso de importación.")
+
+    def get_tags(self):
+        url = f"{self.base_url}/api/v3/tag"
+        response = requests.get(url, headers=self.headers)
+        return response.json() if response.status_code == 200 else None

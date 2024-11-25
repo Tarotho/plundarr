@@ -29,7 +29,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src /app
 
 # Cambia el propietario de los directorios de datos y configuración a appuser
-RUN chown -R appuser:appgroup /app /app/data /app/config
+RUN chown -R appuser:appgroup /app/*
 
 # Cambiar al usuario normal (no root) para la ejecución del contenedor
 USER appuser
