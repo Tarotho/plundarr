@@ -2,13 +2,13 @@ import logging
 import os
 import time
 
-from connectors.telegram import activate_telegram
-from connectors.youtube import get_playlist_info
+from connectors.telegram.telegram import activate_telegram
+from connectors.youtube.youtube import get_playlist_info
 from managers.episodeManager import generate_episode_information
-from managers.fileManager import validate_series_yaml, generate_telegram_configuration, generate_conf
+from managers.fileManager import validate_series_yaml
 from managers.seriesManager import download_video
+from utils.configuration.configuration import generate_telegram_configuration, generate_conf
 from utils.save import load_downloaded_episodes, is_episode_downloaded, load_series_list
-from utils.utils import move_env_conf
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,6 @@ def main():
 
 if __name__ == "__main__":
     generate_conf()
-    move_env_conf()
     while True:  # Ciclo infinito
         main()
         download_interval = os.getenv('DOWNLOAD_INTERVAL', '60')

@@ -1,7 +1,7 @@
 import logging
 
-from connectors.sonarr import Sonarr
-from connectors.youtube import get_format_info
+from connectors.sonarr.sonarr import Sonarr
+from connectors.youtube.youtube import get_format_info
 from utils.utils import episode_title_reduction, sanitize_filename, format_episode_title, generate_command, \
     word_count_overlap
 
@@ -112,9 +112,3 @@ def get_series_information(series_name):
             return series
             # Si no se encuentra ninguna serie con el título dado
     return "Serie no encontrada"
-
-
-
-
-
-

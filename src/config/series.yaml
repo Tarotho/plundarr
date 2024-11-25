@@ -1,7 +1,0 @@
-series:
-  - title: "Series Example"
-    playlist:
-      - "https://www.youtube.com/playlist_example"
-      - "anoder url"
-    subtitles_language: "es,es, jp"
-    audio_language: "es,en,ja"

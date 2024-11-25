@@ -1,17 +1,10 @@
 import logging
 
 import requests
-import yaml
 
 from utils.save import read_conf
 
 logger = logging.getLogger(__name__)
-
-
-def load_config(config_path):
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
 
 
 class Sonarr:
