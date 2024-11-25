@@ -15,6 +15,7 @@ def generate_episode_information(video_information, wished_series):
     sonarr_episodes_information = get_episode_information_from_sonarr(episode_title,
                                                                       sonarr_series_information.get('id'))
 
+    logger.debug(f'la informacion retornada por sonarr del episodio es: {sonarr_episodes_information}')
     # Buscamos metadatos usando yld
     format_information = get_format_info(video_information['url'])
     best_video = None
