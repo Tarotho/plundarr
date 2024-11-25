@@ -36,6 +36,7 @@ def generate_episode_information(video_information, wished_series):
         "seasonNumber": sonarr_episodes_information.get("seasonNumber"),
         "episodeNumber": sonarr_episodes_information.get("episodeNumber"),
         "isMonitored": sonarr_episodes_information.get('monitored'),
+        "hasFile": sonarr_episodes_information.get('hasFile'),
         "resolution": best_video.get('height'),
         "subtitles_language": wished_series.get("subtitles_language", "").split(",") if wished_series.get(
             "subtitles_language") else [],
