@@ -81,9 +81,9 @@ def generate_wished_series(tag_id, yaml_file="config/series.yaml"):
 
     # Crear nuevas entradas para las series que no están en el archivo
     for serie in whished_series:
-        if serie["title"] not in existing_titles:
+        if serie not in existing_titles:
             new_entry = {
-                "title": serie["title"],
+                "title": serie,
                 "playlist": [""],  # Añadir la URL adecuada si se dispone
                 "subtitles_language": "",
                 "audio_language": ""
