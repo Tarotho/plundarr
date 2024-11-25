@@ -1,7 +1,0 @@
-series:
-  - title: "Series Example" # series title identical as Sonarr
-    playlist:
-      - "https://www.youtube.com/playlist_example" # URL Youtube
-      - "anoder url" #You can put all url as you want
-    subtitles_language: "es,es, jp" # Opcional
-    audio_language: "es,en,ja" # Opcional
