@@ -32,6 +32,7 @@ def main():
                         continue
                     logger.info(f'Se procede a descargar {title_video}')
                     episode_information = generate_episode_information(video_information, wished_series)
+                    logger.debug(f'la inforamcion encontrada es: {episode_information}')
                     if episode_information.get('isMonitored') is True:
                         telegram = activate_telegram(generate_telegram_configuration())
                         download_video(episode_information, downloaded_episodes, telegram)
