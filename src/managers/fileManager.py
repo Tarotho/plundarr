@@ -25,7 +25,7 @@ def validate_series_yaml(serie):
 
     # Validar que, si existen, 'subtitles_language' y 'audio_language' sean cadenas
     if "subtitles_language" in serie and not isinstance(serie["subtitles_language"], str):
-        logger.error(f"'subtitles_language' debe ser una cadena en la serie: {series}")
+        logger.error(f"'subtitles_language' debe ser una cadena en la serie: {serie}")
         is_valid = False
 
     if "audio_language" in serie and not isinstance(serie["audio_language"], str):
@@ -38,9 +38,3 @@ def validate_series_yaml(serie):
         logger.error("El archivo YAML tiene errores. Modifíquelo antes de continuar")
     shutil.copy("config/series.yaml", "data/series.yaml")
     return is_valid  # Devuelve True si es válido, False si tiene errores
-
-
-
-
-
-
