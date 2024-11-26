@@ -45,12 +45,6 @@ def main():
 
 
 if __name__ == "__main__":
-    print('prueba print')
-    logger.debug('prueba debug')
-    logger.info('prueba info')
-    logger.warning('prueba warn')
-    logger.error('prueba error')
-    print('prueba print 2')
     generate_conf()
     initialize_api_service()
     while True:  # Ciclo infinito
