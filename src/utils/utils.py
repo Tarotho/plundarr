@@ -14,12 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 def sanitize_filename(filename):
-    """
-    Limpia un nombre de archivo eliminando caracteres no válidos para el sistema de archivos.
-    :param filename: Nombre del archivo original.
-    :return: Nombre del archivo limpio.
-    """
-    # Reemplaza caracteres problemáticos con un guion bajo
+    # Reemplaza caracteres problemáticos con un espacio
     return re.sub(r'[<>:"/\\|?*\']', '', filename)
 
 
@@ -50,19 +45,23 @@ def generate_command(episode_information):
     return command
 
 
-def move_files(episode_path, title):
-    temp_path = f"./downloads/{title}.mkv"
-    final_path = f".{episode_path}/{title}.mkv"
+def move_files(episode_information):
+    downloads_path = episode_information['downloadsPath']
+    sonarr_path = episode_information['episodePath']
+    final_episode_title = episode_information['finalEpisodeTitle']
+    temp_path = f"..{downloads_path}/{final_episode_title}.mkv"
+    final_path = f"..{sonarr_path}/{final_episode_title}.mkv"
 
     try:
         # Crear la ruta de destino si no existe
-        os.makedirs(os.path.dirname(final_path), exist_ok=True)
-
+        if not os.path.exists(final_path):
+            logger.warning(f'{final_path} no existe, se crea')
+            os.makedirs(os.path.dirname(final_path), exist_ok=True)
         # Mover el archivo
         shutil.move(temp_path, final_path)
-        print(f"Archivo movido a: {final_path}")
+        logger.info(f"Archivo movido a: {final_path}")
     except Exception as e:
-        print(f"Error al mover el archivo {title}: {e}")
+        logger.error(f"Error al mover el archivo {final_episode_title}: {e}")
 
 
 def episode_title_reduction(episode_title, serie_title):
@@ -107,7 +106,6 @@ def format_episode_title(episode_information):
 
 
 def move_env_conf():
-    logger.debug(f'el contenido de la carpeta data es {os.listdir("/app/data")}')
     destiny_path = "/app/config/"
     origin_path = "/app/data/"
     series = "series.yaml"

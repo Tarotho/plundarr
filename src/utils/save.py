@@ -19,7 +19,6 @@ def load_downloaded_episodes(file_path='config/downloaded.txt'):
 
 
 def save_downloaded_episodes(episodes, file_path='config/downloaded.txt'):
-    """Guardar los episodios descargados en un archivo TXT."""
     logger.info('Se procede a guardar la información de los capítulos descargados')
     with open(file_path, 'a', encoding='utf-8') as file:
         # Escribimos cada episodio en una nueva línea
@@ -63,7 +62,7 @@ def read_conf(file_path='config/plundarr.conf'):
 
     # Verificar si el archivo existe antes de intentar leerlo
     if not os.path.exists(file_path):
-        print(f"El archivo {file_path} no existe.")
+        logger.warning(f"El archivo {file_path} no existe.")
         return None
 
     try:
@@ -72,15 +71,8 @@ def read_conf(file_path='config/plundarr.conf'):
 
         # Verificar si se han cargado secciones
         if not config_parser.sections():
-            print(f"No se encontraron secciones en el archivo {file_path}.")
+            logger.warning(f"No se encontraron secciones en el archivo {file_path}.")
             return None
-
-        # Mostrar todas las secciones del archivo
-        print("Secciones disponibles:")
-        for section in config_parser.sections():
-            print(f"[{section}]")
-            for key, value in config_parser.items(section):
-                print(f"{key} = {value}")
 
         # Retornar el objeto config_parser para uso posterior
         return config_parser
