@@ -9,12 +9,11 @@ logger = logging.getLogger(__name__)
 
 
 def generate_episode_information(video_information, wished_series):
-    episode_title = episode_title_reduction(sanitize_filename(video_information['title']),
-                                            wished_series['title'])  # limpia el titulo del capitulo
-    sonarr_series_information = get_series_information(wished_series['title'])
-    sonarr_episodes_information = get_episode_information_from_sonarr(episode_title,
-                                                                      sonarr_series_information.get('id'))
-
+    sanitize_title = sanitize_filename(video_information['title'])
+    episode_title = episode_title_reduction(sanitize_title, wished_series['title'])
+    series_information = get_series_information(wished_series['title'])
+    episode_information = get_episode_information(episode_title,
+                                                  series_information.get('id'))
     # Buscamos metadatos usando yld
     format_information = get_format_info(video_information['url'])
     best_video = None
@@ -25,17 +24,18 @@ def generate_episode_information(video_information, wished_series):
     episode_information = {
         "youtubeTitle": video_information['title'],
         "youtubeUrl": video_information['url'],
-        "seriesTitle": sonarr_series_information.get("title"),
-        "seriesId": sonarr_series_information.get('id'),
+        "seriesTitle": series_information.get("title"),
+        "seriesId": series_information.get('id'),
         "downloadsPath": "/plundarr",
-        "seriesPath": sonarr_series_information.get("path"),
-        "episodePath": f"{sonarr_series_information.get('path')}/"
-                       f"Season {sonarr_episodes_information.get('seasonNumber'):02}",
-        "seriesYear": sonarr_series_information.get("year"),
-        "episodeTitle": sonarr_episodes_information.get("title"),
-        "seasonNumber": sonarr_episodes_information.get("seasonNumber"),
-        "episodeNumber": sonarr_episodes_information.get("episodeNumber"),
-        "isMonitored": sonarr_series_information.get('monitored'),
+        "seriesPath": series_information.get("path"),
+        "episodePath": f"{series_information.get('path')}/"
+                       f"Season {episode_information.get('seasonNumber'):02}",
+        "seriesYear": series_information.get("year"),
+        "episodeTitle": episode_information.get("title"),
+        "seasonNumber": episode_information.get("seasonNumber"),
+        "episodeNumber": episode_information.get("episodeNumber"),
+        "isMonitored": episode_information.get('monitored'),
+        "hasFile": episode_information.get('hasFile'),
         "resolution": best_video.get('height'),
         "subtitles_language": wished_series.get("subtitles_language", "").split(",") if wished_series.get(
             "subtitles_language") else [],
@@ -50,11 +50,10 @@ def generate_episode_information(video_information, wished_series):
     episode_information.update({
         "command": command
     })
-    logger.debug(command)
     return episode_information
 
 
-def get_episode_information_from_sonarr(episode_title, series_id):
+def get_episode_information(episode_title, series_id):
     sonarr = Sonarr()
     episodes_information = sonarr.get_episodes_from_series_id(series_id)
     # Inicializar variables para rastrear el episodio con más coincidencias

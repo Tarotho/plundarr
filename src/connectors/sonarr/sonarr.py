@@ -28,7 +28,7 @@ class Sonarr:
         url = f"{self.base_url}/api/v3/series"
         response = requests.get(url, headers=self.headers)
         if response.status_code == 200:
-            logger.info('La informacion se acptura correctamente')
+            logger.info('La informacion se captura correctamente')
             return response.json()
         else:
             logger.error('hay un error al capturar las series')
@@ -60,8 +60,7 @@ class Sonarr:
     def import_episodes(self, episode_list):
         base_url = f"{self.base_url}/api/v3/command"
         if not episode_list:  # Si el JSON está vacío o None
-            logger.warning("Error: La carpeta está vacía, no hay nada que importar.")
-
+            raise RuntimeError("Error: La carpeta está vacía, no hay nada que importar.")
         for episode in episode_list:
             try:
                 r = requests.post(base_url, headers=self.headers, json=episode)

@@ -15,28 +15,27 @@ def download_video(episode_information, downloaded_episodes, telegram):
         telegram = Telegram()  # Crear una instancia de Telegram para enviar mensajes
 
     if download_episode(episode_information['command']):  # Descargar el episodio
-        logger.info(f"Descarga completada")
-        downloaded_episodes.append(
-            episode_information.get('youtubeTitle'))  # Si la descarga fue exitosa, agregar el episodio a la lista
-        save_downloaded_episodes(downloaded_episodes)  # Guardar la lista actualizada de episodios descargados
-        # Intentar importar automáticamente el episodio
+        logger.info(f'episodio descargado en {episode_information["downloadsPath"]}')
         if import_episode_using_sonarr(episode_information.get('downloadsPath')):
+            logger.info('Se incluye el capitulo a la lista de descargados')
+            downloaded_episodes.append(episode_information.get('youtubeTitle'))
             if telegram:
                 telegram.send_message(
                     f"episodio {episode_information['finalEpisodeTitle']} importado por sonarr desde youtubarr")
         else:
-            move_files(episode_information.get('episodePath'), episode_information['finalEpisodeTitle'])
-            if telegram:
-                telegram.send_message(
-                    f"no se ha podido importar {episode_information['finalEpisodeTitle']}, "
-                    f"por favor, importalo manualmente")
+            if move_files(episode_information):
+                downloaded_episodes.append(episode_information.get('youtubeTitle'))
+                logger.info('Se incluye el capitulo a la lista de descargados')
+                if telegram:
+                    telegram.send_message(
+                        f"no se ha podido importar {episode_information['finalEpisodeTitle']}, "
+                        f"por favor, importalo manualmente")
+        save_downloaded_episodes(downloaded_episodes)
 
 
-# Función para filtrar las series que contienen el ID del tag
 def filter_series_by_tag(tag_id):
     sonarr = Sonarr()
     series = sonarr.get_series()
 
     series_list = [serie['title'] for serie in series if int(tag_id) in serie.get("tags", [])]
-    logger.debug(f'las series encontradas son: {series_list}')
     return series_list

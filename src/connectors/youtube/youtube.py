@@ -18,11 +18,13 @@ def get_format_info(url):
 
 def download_episode(command):
     try:
+        logger.info('Iniciando proceso de descarga')
         subprocess.run(command, check=True)
-        return True  # Indicar que la descarga fue exitosa
+        logger.info('Descarga existosa')
+        return True
     except subprocess.CalledProcessError as e:
         logger.error(f"Error al descargar el video: {e}")
-        return False  # Indicar que la descarga falló
+        return False
 
 
 def get_playlist_info(playlist_url):
@@ -32,4 +34,5 @@ def get_playlist_info(playlist_url):
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        logger.info('Extraemos la informacion de los capitulos de la playlist')
         return ydl.extract_info(playlist_url, download=False)
