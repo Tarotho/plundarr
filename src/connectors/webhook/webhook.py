@@ -62,7 +62,7 @@ def verify_auth(auth_header, config):
 
 
 def start_api_service():
-    app.run(host="192.168.0.2", port=3737, debug=False, use_reloader=False)
+    app.run(host="0.0.0.0", port=3737, debug=False, use_reloader=False)
 
 
 def initialize_api_service():
