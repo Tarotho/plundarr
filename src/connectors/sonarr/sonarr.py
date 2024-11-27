@@ -2,9 +2,9 @@ import logging
 
 import requests
 
-from utils.save import read_conf
+from managers.saveManager import read_conf
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('SonarrConnector')
 
 
 class Sonarr:

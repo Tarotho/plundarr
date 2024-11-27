@@ -3,7 +3,7 @@ import subprocess
 
 import yt_dlp
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('YdlConnector')
 
 
 def get_format_info(url):
@@ -32,7 +32,6 @@ def get_playlist_info(playlist_url):
         'quiet': True,
         'extract_flat': True,  # Extraer solo la lista de videos sin descargar
     }
-
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         logger.info('Extraemos la informacion de los capitulos de la playlist')
         return ydl.extract_info(playlist_url, download=False)

@@ -6,11 +6,11 @@ import time
 
 from flask import Flask, request, jsonify
 
-from utils.configuration.configuration import generate_wished_series, remove_series_by_title
-from utils.save import read_conf, delete_episode_from_downloaded
+from managers.saveManager import read_conf, delete_episode_from_downloaded
+from utils.configuration.generateConfig import generate_wished_series, remove_series_by_title
 
 logger = logging.getLogger(__name__)
-app = Flask(__name__)
+app = Flask('WebhookConnector')
 
 
 @app.route('/api', methods=['POST'])
