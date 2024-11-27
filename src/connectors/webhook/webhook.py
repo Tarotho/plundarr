@@ -1,8 +1,5 @@
 import base64
 import logging
-import os
-import threading
-import time
 
 from flask import Flask, request, jsonify
 
@@ -63,13 +60,3 @@ def verify_auth(auth_header, config):
 
 def start_api_service():
     app.run(host="0.0.0.0", port=3737, debug=False, use_reloader=False)
-
-
-def initialize_api_service():
-    config_path = 'config/plundarr.conf'
-    while not os.path.exists(config_path):
-        print('se localiza config')
-        time.sleep(1)
-    webhook_thread = threading.Thread(target=start_api_service)
-    webhook_thread.daemon = True  # Esto asegura que el hilo se cierre cuando el programa principal termine
-    webhook_thread.start()

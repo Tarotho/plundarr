@@ -2,9 +2,9 @@ import logging
 import os
 import time
 
-from connectors.webhook.webhook import initialize_api_service
 from managers.saveManager import load_series_list
 from managers.seriesManager import download_series
+from threadStarted.threadStarted import initialize_api_service, initialize_watcher
 from utils.configuration.generateConfig import generate_conf
 from utils.configuration.validateConfig import validate_series_yaml
 
@@ -21,6 +21,7 @@ def main():
 if __name__ == "__main__":
     generate_conf()
     initialize_api_service()
+    initialize_watcher()
     while True:
         main()
         download_interval = os.getenv('DOWNLOAD_INTERVAL', '60')

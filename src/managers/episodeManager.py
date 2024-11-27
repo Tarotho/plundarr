@@ -94,7 +94,6 @@ def import_episode_using_sonarr(episode_path):
 
 
 def should_download_video(title_video, downloaded_episodes, episode_information):
-    logger.debug(downloaded_episodes)
     if title_video in downloaded_episodes:
         logger.warning(f"El capitulo {title_video} ya fué descargado con anterioridad, saltando.")
         return False
