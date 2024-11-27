@@ -106,3 +106,30 @@ def generate_wished_series(tag_id, yaml_file="config/series.yaml"):
         yaml.safe_dump(data, file, sort_keys=False)
 
     return data
+
+
+def remove_series_by_title(title, yaml_file="config/series.yaml"):
+    # Leer contenido existente del archivo YAML (si existe)
+    if exists(yaml_file):
+        with open(yaml_file, "r") as file:
+            data = yaml.safe_load(file) or {"series": []}
+    else:
+        logger.info(f'El archivo {yaml_file} no existe, no hay series para eliminar.')
+        return None
+
+    # Filtrar las series que no coinciden con el título proporcionado
+    series_to_keep = [serie for serie in data["series"] if serie["title"] != title]
+
+    if len(series_to_keep) == len(data["series"]):
+        # No se eliminó ninguna serie
+        logger.info(f'No se encontró ninguna serie con el título "{title}" en el archivo.')
+    else:
+        # Se eliminó una serie
+        data["series"] = series_to_keep
+        logger.info(f'Se ha eliminado la serie con el título "{title}".')
+
+    # Guardar los datos actualizados en el archivo YAML
+    with open(yaml_file, "w") as file:
+        yaml.safe_dump(data, file, sort_keys=False)
+
+    return data

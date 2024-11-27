@@ -9,7 +9,7 @@ from managers.episodeManager import generate_episode_information
 from managers.fileManager import validate_series_yaml
 from managers.seriesManager import download_video
 from utils.configuration.configuration import generate_telegram_configuration, generate_conf
-from utils.save import load_downloaded_episodes, is_episode_downloaded, load_series_list
+from utils.save import load_downloaded_episodes, load_series_list
 
 logger = logging.getLogger(__name__)
 
@@ -25,12 +25,12 @@ def main():
                 playlist_info = get_playlist_info(playlist_url)  # Obtener la información de la lista de reproducción
 
                 for video_information in playlist_info.get("entries"):
-                    title_video = video_information['title']
-                    if is_episode_downloaded(title_video, downloaded_episodes):
+                    episode_information = generate_episode_information(video_information, wished_serie)
+                    title_video = episode_information['episodeTitle']
+                    if title_video in downloaded_episodes:
                         logger.warning(f"El capitulo {title_video} ya fué descargado con anterioridad, saltando.")
                         continue
                     logger.info(f'Se procede a descargar {title_video}')
-                    episode_information = generate_episode_information(video_information, wished_serie)
                     if episode_information.get('isMonitored'):
                         logger.info('Sonarr Monitoriza este episodio')
                         if not episode_information.get('hasFile'):

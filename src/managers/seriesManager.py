@@ -24,7 +24,7 @@ def download_video(episode_information, downloaded_episodes, telegram):
                     f"episodio {episode_information['finalEpisodeTitle']} importado por sonarr desde youtubarr")
         else:
             if move_files(episode_information):
-                downloaded_episodes.append(episode_information.get('youtubeTitle'))
+                downloaded_episodes.append(episode_information.get('episodeTitle'))
                 logger.info('Se incluye el capitulo a la lista de descargados')
                 if telegram:
                     telegram.send_message(
