@@ -4,3 +4,4 @@ yt-dlp
 fastapi
 uvicorn
 flask
+watchdog

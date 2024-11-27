@@ -1,13 +1,13 @@
 import base64
-import os
-import threading
+import logging
 
 from flask import Flask, request, jsonify
 
-from utils.configuration.configuration import generate_wished_series
-from utils.save import read_conf
+from managers.saveManager import read_conf, delete_episode_from_downloaded
+from utils.configuration.generateConfig import generate_wished_series, remove_series_by_title
 
-app = Flask(__name__)
+logger = logging.getLogger(__name__)
+app = Flask('WebhookConnector')
 
 
 @app.route('/api', methods=['POST'])
@@ -22,22 +22,26 @@ def webhook():
 
     # Procesar el cuerpo del webhook
     data = request.json
-    print(f'recibido webhook {data}')
     event_type = data.get("eventType")
-    # Los 'eventType':
-    #
-    # 'SeriesAdd'
-    # 'SeriesDelete'
-    # 'Test'
-    # 'EpisodeFileDelete'
-    if event_type == "Series Added" or "Metadata":
+    series_data = data.get("series")
+    if event_type == "Test":
+        logger.info('la conexion con sonarr es correcta')
+        return jsonify({"status": "received"}), 200
+    elif event_type == "SeriesAdd":
         generate_wished_series(youtube_tag)
-        series_data = data.get("series")
-        print(f"Serie actualizada: {series_data['title']}")
-        # Aquí puedes hacer lo que necesites con la información
-        # Por ejemplo, actualizar una base de datos, registrar el cambio, etc.
-
-    return jsonify({"status": "received"}), 200
+        logger.info(f"Serie actualizada: {series_data['title']}")
+        return jsonify({"status": "received"}), 200
+    elif event_type == "SeriesDelete":
+        remove_series_by_title(data["series"]['title'])
+        logger.info(f"Serie eliminada de seguimiento: {series_data['title']}")
+        return jsonify({"status": "received"}), 200
+    elif event_type == "EpisodeFileDelete":
+        delete_episode_from_downloaded(data["series"]['title'])
+        logger.info(f"episodio eliminada de descargados: {series_data['title']}")
+        return jsonify({"status": "received"}), 200
+    else:
+        logger.error(f'No se tiene accion para el evento: {event_type}')
+        return jsonify({"status": "received"}), 200
 
 
 def verify_auth(auth_header, config):
@@ -55,12 +59,4 @@ def verify_auth(auth_header, config):
 
 
 def start_api_service():
-    app.run(host="192.168.0.2", port=5000, debug=False, use_reloader=False)
-
-
-def initialize_api_service():
-    config_path = 'config/plundarr.conf'
-    while not os.path.exists(config_path):
-        webhook_thread = threading.Thread(target=start_api_service)
-        webhook_thread.daemon = True  # Esto asegura que el hilo se cierre cuando el programa principal termine
-        webhook_thread.start()
+    app.run(host="0.0.0.0", port=3737, debug=False, use_reloader=False)

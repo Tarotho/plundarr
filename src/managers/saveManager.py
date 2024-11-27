@@ -4,7 +4,7 @@ import os
 
 import yaml
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('SaveManager')
 
 
 def load_downloaded_episodes(file_path='config/downloaded.txt'):
@@ -26,8 +26,22 @@ def save_downloaded_episodes(episodes, file_path='config/downloaded.txt'):
             file.write(f"{episode}\n")
 
 
-def is_episode_downloaded(title_video, downloaded_episodes):
-    return title_video in downloaded_episodes
+def delete_episode_from_downloaded(title, file_path='config/downloaded.txt'):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        downloaded_episodes = [line.strip() for line in file.readlines()]
+
+    if title not in downloaded_episodes:
+        logger.info(f"El título '{title}' no se encontró en la lista de episodios descargados.")
+        return False
+
+    downloaded_episodes.remove(title)
+
+    with open(file_path, 'w', encoding='utf-8') as file:
+        for episode in downloaded_episodes:
+            file.write(f"{episode}\n")
+
+    logger.info(f"El título '{title}' ha sido eliminado de la lista de episodios descargados.")
+    return True
 
 
 def save_conf(config, section, file_path='config/plundarr.conf'):

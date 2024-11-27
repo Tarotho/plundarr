@@ -1,56 +1,46 @@
 import logging
 
 from connectors.sonarr.sonarr import Sonarr
-from connectors.youtube.youtube import get_format_info
-from utils.utils import episode_title_reduction, sanitize_filename, format_episode_title, generate_command, \
-    word_count_overlap
+from connectors.telegram.telegram import Telegram
+from connectors.youtube.youtube import download_episode
+from managers.saveManager import save_downloaded_episodes
+from utils.configuration.validateConfig import validate_telegram_configuration
+from utils.utils import word_count_overlap, move_files
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('EpisodeManager')
 
 
-def generate_episode_information(video_information, wished_series):
-    sanitize_title = sanitize_filename(video_information['title'])
-    episode_title = episode_title_reduction(sanitize_title, wished_series['title'])
-    series_information = get_series_information(wished_series['title'])
-    episode_information = get_episode_information(episode_title,
-                                                  series_information.get('id'))
-    # Buscamos metadatos usando yld
-    format_information = get_format_info(video_information['url'])
-    best_video = None
-    for formats in format_information['formats']:
-        if formats.get('height'):
-            if best_video is None or best_video.get('height') < formats.get('height'):
-                best_video = formats
-    episode_information = {
-        "youtubeTitle": video_information['title'],
-        "youtubeUrl": video_information['url'],
-        "seriesTitle": series_information.get("title"),
-        "seriesId": series_information.get('id'),
-        "downloadsPath": "/plundarr",
-        "seriesPath": series_information.get("path"),
-        "episodePath": f"{series_information.get('path')}/"
-                       f"Season {episode_information.get('seasonNumber'):02}",
-        "seriesYear": series_information.get("year"),
-        "episodeTitle": episode_information.get("title"),
-        "seasonNumber": episode_information.get("seasonNumber"),
-        "episodeNumber": episode_information.get("episodeNumber"),
-        "isMonitored": episode_information.get('monitored'),
-        "hasFile": episode_information.get('hasFile'),
-        "resolution": best_video.get('height'),
-        "subtitles_language": wished_series.get("subtitles_language", "").split(",") if wished_series.get(
-            "subtitles_language") else [],
-        "audio_language": wished_series.get("audio_language", "").split(",") if wished_series.get(
-            "audio_language") else [],
-    }
-    final_episode_title = format_episode_title(episode_information)
-    episode_information.update({
-        "finalEpisodeTitle": final_episode_title,
-    })
-    command = generate_command(episode_information)
-    episode_information.update({
-        "command": command
-    })
-    return episode_information
+def download_video(episode_information, downloaded_episodes):
+    is_telegram_activate = validate_telegram_configuration()
+    telegram = Telegram() if is_telegram_activate else None
+
+    if not download_episode(episode_information['command']):
+        logger.error("La descarga del episodio falló")
+        return
+
+    logger.info(f'episodio descargado en {episode_information["downloadsPath"]}')
+
+    if import_episode_using_sonarr(episode_information['downloadsPath']):
+        handle_successful_download(telegram, downloaded_episodes, episode_information['episodeTitle'],
+                                   success_message=True)
+    elif move_files(episode_information):
+        handle_successful_download(telegram, downloaded_episodes, episode_information['episodeTitle'],
+                                   success_message=False)
+    else:
+        logger.error("No se pudo importar ni mover el episodio")
+
+
+def handle_successful_download(telegram, downloaded_episodes, episode_title, success_message):
+    logger.info('Se incluye el capitulo a la lista de descargados')
+    downloaded_episodes.append(episode_title)
+    save_downloaded_episodes(downloaded_episodes)
+    if telegram:
+        message = (
+            f"Episodio {episode_title} importado por Sonarr desde Youtubarr"
+            if success_message
+            else f"No se ha podido importar {episode_title}, por favor, impórtalo manualmente"
+        )
+        telegram.send_message(message)
 
 
 def get_episode_information(episode_title, series_id):
@@ -103,13 +93,15 @@ def import_episode_using_sonarr(episode_path):
         return False
 
 
-def get_series_information(series_name):
-    logger.info('se instancia Sonarr')
-    sonarr = Sonarr()
-    series_data = sonarr.get_series()
-    # Iterar sobre las series y buscar la que coincida con el título proporcionado
-    for series in series_data:
-        if series_name.lower() in series.get("title").lower():  # Comparar título exacto
-            return series
-            # Si no se encuentra ninguna serie con el título dado
-    return "Serie no encontrada"
+def should_download_video(title_video, downloaded_episodes, episode_information):
+    if title_video in downloaded_episodes:
+        logger.warning(f"El capitulo {title_video} ya fué descargado con anterioridad, saltando.")
+        return False
+    if not episode_information.get('isMonitored'):
+        logger.info('Sonarr no Monitoriza este episodio, no se descarga.')
+        return False
+    if episode_information.get('hasFile'):
+        logger.info(f'Sonarr ya posee este episodio, no se descarga.')
+        return False
+    else:
+        return True

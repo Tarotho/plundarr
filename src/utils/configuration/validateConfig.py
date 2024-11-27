@@ -1,7 +1,23 @@
+import configparser
 import logging
+import os
 import shutil
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('ConfigValidator')
+
+
+def validate_telegram_configuration(file_path='config/plundarr.conf'):
+    config_parser = configparser.ConfigParser()
+    if os.path.exists(file_path):
+        config_parser.read(file_path)
+        bot_token = config_parser['telegram']['bot_token']
+        chat_id = config_parser['telegram']['chat_id']
+        if bot_token and bot_token != "YOUR_BOT_TOKEN_FROM_TELEGRAM" and chat_id and chat_id != "YOUR_TELEGRAM_CHAT_ID":
+            logger.info("telegram se activa")
+            return True
+        else:
+            logger.warning("telegram no se activa")
+            return False
 
 
 def validate_series_yaml(serie):

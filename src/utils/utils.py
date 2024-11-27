@@ -6,11 +6,11 @@ import shutil
 # Configuración global de logging
 logging.basicConfig(
     level=logging.DEBUG,  # Puedes elegir el nivel de log que necesites
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # Formato del log
+    format='[%(levelname)s] %(name)s: %(message)s - %(asctime)s',
     handlers=[logging.StreamHandler()]  # Esto imprime los logs en la consola
 )
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('Utils')
 
 
 def sanitize_filename(filename):
@@ -64,14 +64,10 @@ def move_files(episode_information):
         logger.error(f"Error al mover el archivo {final_episode_title}: {e}")
 
 
-def episode_title_reduction(episode_title, serie_title):
-    # Dividir el título de la serie en palabras y crear un patrón para buscar esas palabras en el título del episodio
-    pattern = r'\b(' + '|'.join(re.escape(word) for word in serie_title.split()) + r')\b'
-
-    # Usar re.sub para reemplazar todas las coincidencias con una cadena vacía
-    reduced_title = re.sub(pattern, '', episode_title, flags=re.IGNORECASE)
-
-    # Eliminar espacios adicionales generados por la sustitución
+def episode_title_reduction(episode_title, series_title):
+    sanitize_title = sanitize_filename(episode_title)
+    pattern = r'\b(' + '|'.join(re.escape(word) for word in series_title.split()) + r')\b'
+    reduced_title = re.sub(pattern, '', sanitize_title, flags=re.IGNORECASE)
     reduced_title = ' '.join(reduced_title.split())
 
     return reduced_title
