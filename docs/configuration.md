@@ -112,7 +112,7 @@ El siguiente bloque de configuración es para el contenedor de `Sonarr`. Aquí e
 ```
   Esto garantiza que los archivos descargados por `Plundarr` estén disponibles para que Sonarr los gestione.
 
-##Configuracion del Network
+## Configuracion del Network
 
 No olvidar incluir la network de tipo bridge para que se comuniquen correctamente ambos contenedores.
 
