@@ -53,8 +53,6 @@ Este archivo detalla las configuraciones necesarias para usar la aplicación cor
 
 ---
 
-## **Cómo Configurar**
-
 ### 1. **Docker Compose**  
 Agrega las variables en el archivo `docker-compose.yml` bajo la sección `environment`. Ejemplo:
 
@@ -81,12 +79,7 @@ services:
       - /path/to/your/downloads/plundarr:/plundarr
     networks:
       - arr
-```
-### Contenedor de Sonarr
 
-El siguiente bloque de configuración es para el contenedor de `Sonarr`. Aquí es donde se hace referencia a la ruta de `plundarr` a través de la variable `SONARR_PATH`, de este modo enseñamos a Sonarr donde están los archivos descargados con Plundar.
-
-```yaml
 sonarr:
     image: linuxserver/sonarr:latest
     container_name: sonarr
@@ -104,14 +97,25 @@ sonarr:
       - /path/to/your/downloads/plundarr:/plundarr  # Esta línea conecta la carpeta de Plundarr con Sonarr
     networks:
       - arr
+
+networks:
+  arr:
+    driver: bridge  # Usamos la red 'bridge' de Docker para asegurar la comunicación entre contenedores
 ```
-### Explicación:
+## Contenedor de Sonarr
+
+El siguiente bloque de configuración es para el contenedor de `Sonarr`. Aquí es donde se hace referencia a la ruta de `plundarr` a través de la variable `SONARR_PATH`, de este modo enseñamos a Sonarr donde están los archivos descargados con Plundar.
 
 - **Variable `SONARR_PATH`**: En el contenedor de Sonarr, debes asegurarte de que la ruta donde Sonarr busca los episodios descargados coincida con la ruta que `Plundarr` utiliza para almacenarlos. Esto se logra mediante el siguiente volumen:
 ```yaml
   - /path/to/your/downloads/plundarr:/plundarr
 ```
   Esto garantiza que los archivos descargados por `Plundarr` estén disponibles para que Sonarr los gestione.
+
+##Configuracion del Network
+
+No olvidar incluir la network de tipo bridge para que se comuniquen correctamente ambos contenedores.
+
 
 ### 2. **Variables de Entorno Manualmente**  
 Si no usas Docker Compose, define las variables directamente al ejecutar Docker:
