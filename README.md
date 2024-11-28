@@ -74,13 +74,15 @@ services:
     environment:
       - PGID=1000
       - PUID=1000
-      - DOWNLOAD_INTERVAL=60 # intervalo en minutos
+      - DOWNLOAD_INTERVAL=60 # (OPCIONAL) intervalo en minutos
       - SONARR_API_IP=SONARR_IP # dirección IP de Sonarr
       - SONARR_API_PORT=SONARR_PORT # puerto de Sonarr
       - SONARR_API_KEY=YOUR_SONARR_API_KEY # clave de API de Sonarr
       - TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_TOKEN # (OPCIONAL) Token del bot de Telegram
       - TELEGRAM_CHAT_ID=YOUR_CHAT_ID # (OPCIONAL) ID de chat de Telegram
       - SONARR_PATH=YOUR_ROUTE_FROM_SONARR # ruta donde Sonarr detectará episodios
+      - PLUNDARR_KEY=1123456 # (OPCIONAL) Contraseña para introducir en al conexion WebHook en Sonarr.
+      - PLUNDARR_USER=USER # (OPCIONAL) Usuario para introducir en al conexion WebHook en Sonarr.
     volumes:
       - ${DOCKER_PATH}/plundarr:/app/config
       - ${HDD_PATH}/hdd3/downloads/plundarr:/downloads
