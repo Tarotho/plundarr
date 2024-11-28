@@ -48,15 +48,17 @@ series:
 
 Las configuraciones generales se gestionan a través de las siguientes variables de entorno:
 
-- `PGID`: ID del grupo para permisos en Docker.
-- `PUID`: ID del usuario para permisos en Docker.
-- `DOWNLOAD_INTERVAL`: Intervalo (en minutos) para buscar nuevos videos.
+- `PGID`*(opcional)*: ID del grupo para permisos en Docker, por defecto 1000.
+- `PUID`*(opcional)*: ID del usuario para permisos en Docker, por defecto 1000.
+- `DOWNLOAD_INTERVAL`*(opcional)*: Intervalo (en minutos) para buscar nuevos videos si no se ingresa seran cada hora.
 - `SONARR_API_IP`: Dirección IP del contenedor de Sonarr.
 - `SONARR_API_PORT`: Puerto del API de Sonarr.
 - `SONARR_API_KEY`: Clave de la API de Sonarr.
 - `TELEGRAM_BOT_TOKEN` *(opcional)*: Token del bot de Telegram para notificaciones.
 - `TELEGRAM_CHAT_ID` *(opcional)*: ID de chat de Telegram para enviar notificaciones.
 - `SONARR_PATH`: Ruta única donde Sonarr detectará los episodios descargados.
+- `PLUNDARR_KEY` *(opcional)*: Clave personalizada para autenticar las solicitudes realizadas a la API de Sonarr.
+- `PLUNDARR_USER` *(opcional)*: Nombre de usuario para autenticar la conexión con Sonarr.
 
 ## Uso
 
