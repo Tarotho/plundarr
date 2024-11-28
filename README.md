@@ -27,66 +27,10 @@ El proyecto está en constante evolución. Algunos de los objetivos para el futu
 
 
 ## Configuración  
+--
+Para más configuraciones, visita la [documentación de configuración](plundar/doc/configuration.md).
 
-### Archivo `series.yaml`  
 
-El archivo `series.yaml` se utiliza para definir las listas de reproducción que deseas descargar y sus configuraciones específicas.  
-
-Ejemplo:  
-
-```yaml
-series:
-  - title: "Series Example"
-    playlist:
-      - "https://www.youtube.com/playlist_example"
-      - "https://www.youtube.com/another_playlist"
-    subtitles_language: "es,es,jp"
-    audio_language: "es,en,ja"
-```
-
-### Variables de entorno
-
-Las configuraciones generales se gestionan a través de las siguientes variables de entorno:
-
-- `PGID`*(opcional)*: ID del grupo para permisos en Docker, por defecto 1000.
-- `PUID`*(opcional)*: ID del usuario para permisos en Docker, por defecto 1000.
-- `DOWNLOAD_INTERVAL`*(opcional)*: Intervalo (en minutos) para buscar nuevos videos si no se ingresa seran cada hora.
-- `SONARR_API_IP`: Dirección IP del contenedor de Sonarr.
-- `SONARR_API_PORT`: Puerto del API de Sonarr.
-- `SONARR_API_KEY`: Clave de la API de Sonarr.
-- `TELEGRAM_BOT_TOKEN` *(opcional)*: Token del bot de Telegram para notificaciones.
-- `TELEGRAM_CHAT_ID` *(opcional)*: ID de chat de Telegram para enviar notificaciones.
-- `SONARR_PATH`: Ruta única donde Sonarr detectará los episodios descargados.
-- `PLUNDARR_KEY` *(opcional)*: Clave personalizada para autenticar las solicitudes realizadas a la API de Sonarr.
-- `PLUNDARR_USER` *(opcional)*: Nombre de usuario para autenticar la conexión con Sonarr.
-
-## Uso
-
-### Docker Compose
-
-Ejemplo de configuración:
-
-```yaml
-services:
-  plundarr:
-    container_name: plundarr
-    image: plundar
-    environment:
-      - PGID=1000
-      - PUID=1000
-      - DOWNLOAD_INTERVAL=60 # (OPCIONAL) intervalo en minutos
-      - SONARR_API_IP=SONARR_IP # dirección IP de Sonarr
-      - SONARR_API_PORT=SONARR_PORT # puerto de Sonarr
-      - SONARR_API_KEY=YOUR_SONARR_API_KEY # clave de API de Sonarr
-      - TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_TOKEN # (OPCIONAL) Token del bot de Telegram
-      - TELEGRAM_CHAT_ID=YOUR_CHAT_ID # (OPCIONAL) ID de chat de Telegram
-      - SONARR_PATH=YOUR_ROUTE_FROM_SONARR # ruta donde Sonarr detectará episodios
-      - PLUNDARR_KEY=1123456 # (OPCIONAL) Contraseña para introducir en al conexion WebHook en Sonarr.
-      - PLUNDARR_USER=USER # (OPCIONAL) Usuario para introducir en al conexion WebHook en Sonarr.
-    volumes:
-      - ${DOCKER_PATH}/plundarr:/app/config
-      - ${HDD_PATH}/hdd3/downloads/plundarr:/downloads
-```
 ## Créditos
 
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp)
